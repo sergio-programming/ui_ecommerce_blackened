@@ -59,6 +59,24 @@
                     </div>
                 </article>
 
+                @if (userProfile()?.documentNumber) {
+                    <article class="rounded-2xl border border-white/10 bg-white/[0.03] p-4 shadow-lg backdrop-blur-sm sm:p-5">
+                        <div class="flex items-start gap-3">
+                            <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/10 bg-black/40 text-gray-200">
+                                <i class="fa-solid fa-id-card"></i>
+                            </span>
+                            <div class="min-w-0">
+                                <p class="text-xs font-semibold uppercase tracking-[0.24em] text-gray-500">
+                                    Documento de identidad
+                                </p>
+                                <p class="mt-2 break-words text-sm font-medium text-gray-100 sm:text-base">
+                                    {{ userProfile()?.documentNumber }}
+                                </p>
+                            </div>
+                        </div>
+                    </article>
+                }
+
                 <article class="rounded-2xl border border-white/10 bg-white/[0.03] p-4 shadow-lg backdrop-blur-sm sm:p-5">
                     <div class="flex items-start gap-3">
                         <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/10 bg-black/40 text-gray-200">

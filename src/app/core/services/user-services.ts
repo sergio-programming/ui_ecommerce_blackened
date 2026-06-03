@@ -1,6 +1,6 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { User, UserCreate, UserEditInfo, UserResponse, UserUpdate } from '../../features/user/user.model';
+import { User, UserCreate, UserDocumentNumberUpdate, UserEditInfo, UserResponse, UserUpdate } from '../../features/user/user.model';
 import { firstValueFrom } from 'rxjs';
 
 @Injectable({
@@ -55,6 +55,12 @@ export class UserServices {
       this.http.put<UserResponse>(`${this.apiUrl}/me`, data)
     );
   }
+
+  async updateUserDocumentNumber(data: UserDocumentNumberUpdate): Promise<UserResponse> {
+    return await firstValueFrom(
+      this.http.patch<UserResponse>(`${this.apiUrl}/me/document-number`, data)
+    );
+  } 
 
   async deleteUser(_id: string): Promise<UserResponse> {
     return await firstValueFrom(

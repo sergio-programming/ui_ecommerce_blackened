@@ -47,6 +47,8 @@ export class CheckoutForm implements OnInit {
   readonly checkoutForm = this.fb.nonNullable.group({
     shippingAddress: ['', [Validators.required, Validators.minLength(10)]],
     city: ['', [Validators.required, Validators.minLength(2)]],
+    phoneNumber: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
+    documentNumber: [''],
     shippingMethod: ['', [Validators.required, Validators.pattern(/^(Estandar|Express)$/)]],
     paymentMethod: ['', [Validators.required, Validators.pattern(/^(Contraentrega|Stripe)$/)]],
   });
@@ -62,6 +64,7 @@ export class CheckoutForm implements OnInit {
     try {
       const user = await this.userServices.getUserProfile();
       this.userInfo.set(user ?? null);
+      this.configureDocumentNumberControl(user);
     } catch (error) {
       console.error('Error al cargar la informacion del usuario: ', error);
     } finally {
@@ -109,6 +112,12 @@ export class CheckoutForm implements OnInit {
       this.message.set(null);
 
       try {
+        if (!this.userInfo()?.documentNumber) {
+          const documentNumber = formData.documentNumber.trim();
+          const userResponse = await this.userServices.updateUserDocumentNumber({ documentNumber });
+          this.userInfo.set(userResponse.user);
+        }
+
         const createdData: OrderCreate = {
           user: userId,
           items: cartItems.map((item) => ({
@@ -118,12 +127,27 @@ export class CheckoutForm implements OnInit {
           })),
           shippingAddress: formData.shippingAddress,
           city: formData.city,
+          phoneNumber: formData.phoneNumber,
           shippingMethod: formData.shippingMethod as ShippingMethod,
           paymentMethod,
         };
 
         const response = await this.orderServices.createOrder(createdData);
+
+        try {
+          if (this.cartInfo()?._id) {
+            await this.cartServices.deleteCart(this.cartInfo()!._id);
+          }
+        } catch (cartError) {
+          console.error('La orden fue creada, pero no se pudo eliminar el carrito:', cartError);
+        }
+
         this.message.set(response.message);
+        this.checkoutForm.reset();
+        
+        setTimeout(() => {
+          this.router.navigate(['/user/inicio']);
+        }, 3000);
       } catch (error: any) {
         console.error('Error al crear la orden: ', error);
         this.message.set(error.error?.message || 'Error interno del servidor');
@@ -152,8 +176,27 @@ export class CheckoutForm implements OnInit {
 
   calculateTotalOrder(subtotal: number, transportationCost: number): string {
     const total = subtotal + transportationCost;
-    this.totalOrder.set(total);
     return this.currencyFormatter.format(total);
+  }
+
+  private configureDocumentNumberControl(user: User | null): void {
+    const documentNumberControl = this.checkoutForm.get('documentNumber');
+
+    if (!documentNumberControl) {
+      return;
+    }
+
+    if (user?.documentNumber) {
+      documentNumberControl.clearValidators();
+      documentNumberControl.setValue('');
+    } else {
+      documentNumberControl.setValidators([
+        Validators.required,
+        Validators.pattern(/^\d{6,10}$/)
+      ]);
+    }
+
+    documentNumberControl.updateValueAndValidity();
   }
 
   onGoToShoppingCart(): void {

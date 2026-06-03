@@ -92,6 +92,14 @@
                                 {{ userInfo()?.email || 'Sin email registrado' }}
                             </p>
                         </div>
+                        @if (userInfo()?.documentNumber) {
+                            <div class="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+                                <p class="text-xs uppercase tracking-[0.2em] text-gray-500">Cedula</p>
+                                <p class="mt-1 break-all text-sm font-semibold text-white">
+                                    {{ userInfo()?.documentNumber }}
+                                </p>
+                            </div>
+                        }
                     </div>
                 </div>
 
@@ -149,6 +157,58 @@
                                     </div>
                                 }
                             </div>
+
+                            <div class="space-y-2 md:col-span-2">
+                                <label
+                                    for="checkoutform-phone-number"
+                                    class="block text-sm font-medium text-gray-200"
+                                >
+                                    Telefono de contacto
+                                </label>
+                                <input
+                                    id="checkoutform-phone-number"
+                                    type="tel"
+                                    formControlName="phoneNumber"
+                                    placeholder="Ej: 3001234567"
+                                    inputmode="numeric"
+                                    autocomplete="tel"
+                                    maxlength="10"
+                                    class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white outline-none transition placeholder:text-gray-500 hover:border-white/20 focus:border-white/30 focus:bg-white/[0.07] focus:ring-2 focus:ring-white/20"
+                                >
+                                @if (checkoutForm.get('phoneNumber')?.invalid && checkoutForm.get('phoneNumber')?.touched) {
+                                    <div class="flex items-start gap-2 rounded-2xl border border-rose-500/20 bg-rose-500/10 px-3 py-2 text-sm text-rose-100">
+                                        <i class="fa-solid fa-triangle-exclamation mt-0.5 text-rose-300"></i>
+                                        <span>El telefono es obligatorio y debe tener 10 digitos.</span>
+                                    </div>
+                                }
+                            </div>
+
+                            @if (!userInfo()?.documentNumber) {
+                                <div class="space-y-2 md:col-span-2">
+                                    <label
+                                        for="checkoutform-document-number"
+                                        class="block text-sm font-medium text-gray-200"
+                                    >
+                                        Cedula
+                                    </label>
+                                    <input
+                                        id="checkoutform-document-number"
+                                        type="text"
+                                        formControlName="documentNumber"
+                                        placeholder="Ej: 1234567890"
+                                        inputmode="numeric"
+                                        autocomplete="off"
+                                        maxlength="10"
+                                        class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white outline-none transition placeholder:text-gray-500 hover:border-white/20 focus:border-white/30 focus:bg-white/[0.07] focus:ring-2 focus:ring-white/20"
+                                    >
+                                    @if (checkoutForm.get('documentNumber')?.invalid && checkoutForm.get('documentNumber')?.touched) {
+                                        <div class="flex items-start gap-2 rounded-2xl border border-rose-500/20 bg-rose-500/10 px-3 py-2 text-sm text-rose-100">
+                                            <i class="fa-solid fa-triangle-exclamation mt-0.5 text-rose-300"></i>
+                                            <span>La cedula es obligatoria y debe tener entre 6 y 10 digitos.</span>
+                                        </div>
+                                    }
+                                </div>
+                            }
                         </div>
 
                         <div class="grid gap-5 md:grid-cols-2">
@@ -224,7 +284,7 @@
                             <button
                                 type="submit"
                                 [disabled]="checkoutForm.invalid || isLoading()"
-                                class="inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white px-5 py-3 text-sm font-semibold text-black shadow-lg transition hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-white/30 disabled:cursor-not-allowed disabled:bg-gray-700 disabled:text-gray-400 disabled:hover:bg-gray-700 sm:w-auto"
+                                class="inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white px-5 py-3 text-sm font-semibold text-black shadow-lg transition cursor-pointer hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-white/30 disabled:cursor-not-allowed disabled:bg-gray-700 disabled:text-gray-400 disabled:hover:bg-gray-700 sm:w-auto"
                             >
                                 <i class="fa-solid fa-credit-card text-sm"></i>
                                 Confirmar pedido

@@ -10,6 +10,7 @@ export interface Checkout {
     user: User;
     shippingAddress: string;
     city: string;
+    phoneNumber: string;
     shippingMethod: ShippingMethod;
     paymentMethod: PaymentMethod;
     total: number;
@@ -21,6 +22,7 @@ export interface CheckoutCreate {
     cart: string;
     shippingAddress: string;
     city: string;
+    phoneNumber: string;
     shippingMethod: ShippingMethod;
     paymentMethod: PaymentMethod;
 }
@@ -28,6 +30,7 @@ export interface CheckoutCreate {
 export interface CheckoutUpdate {
     shippingAddress?: string;
     city?: string;
+    phoneNumber?: string;
     shippingMethod?: ShippingMethod;
     paymentMethod?: PaymentMethod;
 }

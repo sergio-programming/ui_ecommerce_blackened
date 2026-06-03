@@ -43,7 +43,7 @@ export class OrderStatistics implements OnInit {
   }
 
   getTotalOrdersByStatus(status: string): number {
-    const ordersByStatus = this.orders().filter((item) => item.status === 'Pendiente');
+    const ordersByStatus = this.orders().filter((item) => item.status === status);
     return ordersByStatus.length;
   }
 

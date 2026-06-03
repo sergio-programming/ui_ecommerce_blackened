@@ -90,7 +90,7 @@
                                     <div class="flex items-center justify-end gap-2">
                                         <button
                                             type="button"
-                                            class="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-gray-200 transition hover:border-white/20 hover:bg-white/10 hover:text-white"
+                                            class="inline-flex h-10 w-10 !cursor-pointer items-center justify-center rounded-xl border border-white/10 bg-white/5 text-gray-200 transition hover:border-white/20 hover:bg-white/10 hover:text-white"
                                             (click)="onGoToUpdateUserForm(user)"
                                             title="Editar"
                                         >
@@ -100,7 +100,7 @@
                                             @if (user.isActive) {
                                                 <button
                                                     type="button"
-                                                    class="inline-flex h-10 items-center justify-center gap-2 rounded-xl border border-rose-500/20 bg-rose-500/10 px-3 text-rose-200 transition hover:bg-rose-500/20"
+                                                    class="inline-flex h-10 !cursor-pointer items-center justify-center gap-2 rounded-xl border border-rose-500/20 bg-rose-500/10 px-3 text-rose-200 transition hover:bg-rose-500/20"
                                                     (click)="onCancelUser(user._id)"
                                                     title="Desactivar Usuario"
                                                 >
@@ -110,7 +110,7 @@
                                             } @else {
                                                 <button
                                                     type="button"
-                                                    class="inline-flex h-10 items-center justify-center gap-2 rounded-xl border border-emerald-500/20 bg-emerald-500/10 px-3 text-emerald-200 transition hover:bg-emerald-500/20"
+                                                    class="inline-flex h-10 !cursor-pointer items-center justify-center gap-2 rounded-xl border border-emerald-500/20 bg-emerald-500/10 px-3 text-emerald-200 transition hover:bg-emerald-500/20"
                                                     (click)="onActivateUser(user._id)"
                                                     title="Activar Usuario"
                                                 >
@@ -173,7 +173,7 @@
                     <div class="mt-5 grid gap-2 sm:grid-cols-2">
                         <button
                             type="button"
-                            class="inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-semibold text-white transition hover:border-white/20 hover:bg-white/10"
+                            class="inline-flex !cursor-pointer items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-semibold text-white transition hover:border-white/20 hover:bg-white/10"
                             (click)="onGoToUpdateUserForm(user)"
                             title="Editar"
                         >
@@ -185,7 +185,7 @@
                             @if (user.isActive) {
                                 <button
                                     type="button"
-                                    class="inline-flex items-center justify-center gap-2 rounded-xl border border-rose-500/20 bg-rose-500/10 px-4 py-3 text-sm font-semibold text-rose-200 transition hover:bg-rose-500/20"
+                                    class="inline-flex !cursor-pointer items-center justify-center gap-2 rounded-xl border border-rose-500/20 bg-rose-500/10 px-4 py-3 text-sm font-semibold text-rose-200 transition hover:bg-rose-500/20"
                                     (click)="onCancelUser(user._id)"
                                     title="Desactivar Usuario"
                                 >
@@ -195,7 +195,7 @@
                             } @else {
                                 <button
                                     type="button"
-                                    class="inline-flex items-center justify-center gap-2 rounded-xl border border-emerald-500/20 bg-emerald-500/10 px-4 py-3 text-sm font-semibold text-emerald-200 transition hover:bg-emerald-500/20"
+                                    class="inline-flex !cursor-pointer items-center justify-center gap-2 rounded-xl border border-emerald-500/20 bg-emerald-500/10 px-4 py-3 text-sm font-semibold text-emerald-200 transition hover:bg-emerald-500/20"
                                     (click)="onActivateUser(user._id)"
                                     title="Activar Usuario"
                                 >

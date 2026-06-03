@@ -20,6 +20,7 @@ export interface Order {
     items: OrderItem[];
     shippingAddress: string;
     city: string;
+    phoneNumber: string;
     shippingMethod: ShippingMethod;
     paymentMethod: PaymentMethod;
     status: OrderStatus;
@@ -38,12 +39,23 @@ export interface OrderCreate {
     items: OrderCreateItem[];
     shippingAddress: string;
     city: string;
+    phoneNumber: string;
     shippingMethod: ShippingMethod;
     paymentMethod: PaymentMethod;
+}
+
+export interface OrderUpdate {
+    items?: OrderCreateItem[];
+    shippingAddress?: string;
+    city?: string;
+    phoneNumber?: string,
+    shippingMethod?: ShippingMethod;
+    paymentMethod?: PaymentMethod;
+    status?: OrderStatus;
+    paymentStatus?: PaymentStatus;
 }
 
 export interface OrderResponse {
     message: string;
     order: Order;
 }
-

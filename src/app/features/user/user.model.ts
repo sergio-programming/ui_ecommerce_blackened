@@ -7,6 +7,7 @@ export interface User {
     password: string;
     role: UserRoles;
     isActive: boolean;
+    documentNumber: string;
     createdAt: string;
     updatedAt: string;
 }
@@ -16,12 +17,18 @@ export interface UserCreate {
     email: string;
     password: string;
     role: string;
+    documentNumber: string;
 }
 
 export interface UserUpdate {
     fullName: string;
     email: string;
     role: string;
+    documentNumber: string;
+}
+
+export interface UserDocumentNumberUpdate {
+    documentNumber: string;
 }
 
 export interface UserEditInfo {

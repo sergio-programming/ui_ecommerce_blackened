@@ -1,1 +1,214 @@
-<p>order-history works!</p>
+<section class="flex w-full min-w-0 flex-col gap-6 text-white md:gap-8">
+    <div class="overflow-hidden rounded-3xl border border-gray-800 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.08),transparent_32%),linear-gradient(135deg,rgba(17,24,39,0.98),rgba(0,0,0,1)_58%,rgba(17,24,39,0.96))] shadow-2xl">
+        <div class="flex flex-col gap-5 px-5 py-6 sm:px-8 md:px-10 md:py-8 lg:flex-row lg:items-center lg:justify-between">
+            <div class="min-w-0 space-y-2">
+                <span class="inline-flex rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.24em] text-gray-300">
+                    Mi cuenta
+                </span>
+                <div class="space-y-1">
+                    <h1 class="break-words text-3xl font-semibold [text-shadow:0_0_12px_rgba(255,255,255,0.18)] sm:text-4xl">
+                        Historial de ordenes
+                    </h1>
+                    <p class="max-w-2xl text-sm leading-6 text-gray-300 sm:text-base">
+                        Consulta tus compras, productos incluidos, estado del pedido y datos de entrega.
+                    </p>
+                </div>
+            </div>
+
+            <div class="inline-flex items-center justify-center gap-3 rounded-2xl border border-white/10 bg-white/10 px-5 py-3 text-sm font-semibold text-white shadow-lg backdrop-blur-sm max-lg:w-full">
+                <i class="fa-solid fa-receipt text-sm"></i>
+                <span>{{ orders().length }} {{ orders().length === 1 ? 'orden' : 'ordenes' }}</span>
+            </div>
+        </div>
+    </div>
+
+    @if (message()) {
+        <div class="flex items-start gap-3 rounded-2xl border border-amber-300 bg-amber-100 px-4 py-3 text-sm font-medium shadow-lg">
+            <i class="fa-solid fa-circle-info mt-0.5 text-amber-700"></i>
+            <span class="text-gray-900">{{ message() }}</span>
+        </div>
+    }
+
+    @if (isLoading()) {
+        <div class="flex min-h-72 items-center justify-center rounded-3xl border border-gray-800 bg-[linear-gradient(180deg,rgba(17,24,39,0.92),rgba(0,0,0,0.98))] px-6 py-10 text-center shadow-xl">
+            <div class="flex flex-col items-center gap-3">
+                <div class="h-11 w-11 animate-spin rounded-full border-2 border-white/15 border-t-white"></div>
+                <p class="text-sm uppercase tracking-[0.28em] text-gray-300">
+                    Cargando tus ordenes...
+                </p>
+            </div>
+        </div>
+    } @else if (orders().length > 0) {
+        <div class="grid gap-5">
+            @for (order of orders(); track order._id; let i = $index) {
+                <article class="overflow-hidden rounded-3xl border border-gray-800 bg-[linear-gradient(180deg,rgba(17,24,39,0.92),rgba(0,0,0,0.98))] shadow-2xl">
+                    <div class="border-b border-white/10 px-5 py-5 sm:px-6 md:px-8">
+                        <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+                            <div class="min-w-0">
+                                <p class="text-xs font-semibold uppercase tracking-[0.24em] text-gray-500">
+                                    Orden {{ i + 1 }}
+                                </p>
+                                <p class="mt-2 text-sm leading-6 text-gray-300">
+                                    {{ order.items.length }} {{ order.items.length === 1 ? 'producto incluido' : 'productos incluidos' }}
+                                </p>
+                            </div>
+
+                            <div class="flex flex-col gap-3 sm:flex-row lg:justify-end">
+                                <span
+                                    class="inline-flex items-center justify-center rounded-full border px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em]"
+                                    [class.border-amber-500/30]="order.status === 'Pendiente'"
+                                    [class.bg-amber-500/10]="order.status === 'Pendiente'"
+                                    [class.text-amber-300]="order.status === 'Pendiente'"
+                                    [class.border-sky-500/30]="order.status === 'Enviada'"
+                                    [class.bg-sky-500/10]="order.status === 'Enviada'"
+                                    [class.text-sky-300]="order.status === 'Enviada'"
+                                    [class.border-emerald-500/30]="order.status === 'Entregada'"
+                                    [class.bg-emerald-500/10]="order.status === 'Entregada'"
+                                    [class.text-emerald-300]="order.status === 'Entregada'"
+                                    [class.border-rose-500/30]="order.status === 'Cancelada'"
+                                    [class.bg-rose-500/10]="order.status === 'Cancelada'"
+                                    [class.text-rose-300]="order.status === 'Cancelada'"
+                                >
+                                    Estado de la Orden: {{ order.status }}
+                                </span>
+
+                                <span
+                                    class="inline-flex items-center justify-center rounded-full border px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em]"
+                                    [class.border-emerald-500/30]="order.paymentStatus === 'Pagada'"
+                                    [class.bg-emerald-500/10]="order.paymentStatus === 'Pagada'"
+                                    [class.text-emerald-300]="order.paymentStatus === 'Pagada'"
+                                    [class.border-rose-500/30]="order.paymentStatus === 'Rechazado'"
+                                    [class.bg-rose-500/10]="order.paymentStatus === 'Rechazado'"
+                                    [class.text-rose-300]="order.paymentStatus === 'Rechazado'"
+                                    [class.border-amber-500/30]="order.paymentStatus === 'Pendiente'"
+                                    [class.bg-amber-500/10]="order.paymentStatus === 'Pendiente'"
+                                    [class.text-amber-300]="order.paymentStatus === 'Pendiente'"
+                                >
+                                    Estado del Pago: {{ order.paymentStatus }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid gap-5 px-5 py-5 sm:px-6 md:px-8 lg:grid-cols-[1.4fr_0.9fr]">
+                        <div class="min-w-0 space-y-3">
+                            <div class="flex items-center gap-3">
+                                <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/10 bg-black/40 text-gray-200">
+                                    <i class="fa-solid fa-box-open"></i>
+                                </span>
+                                <div class="min-w-0">
+                                    <p class="text-xs font-semibold uppercase tracking-[0.24em] text-gray-500">
+                                        Productos
+                                    </p>
+                                    <p class="text-sm text-gray-300">
+                                        Detalle de tu compra
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="space-y-3">
+                                @for (item of order.items; track item._id) {
+                                    <div class="flex flex-col gap-3 rounded-2xl border border-white/10 bg-white/[0.03] p-4 sm:flex-row sm:items-center sm:justify-between">
+                                        <div class="min-w-0">
+                                            <p class="break-words text-sm font-semibold text-white sm:text-base">
+                                                {{ item.product.description }}
+                                            </p>
+                                            <div class="mt-2 flex flex-wrap gap-2">
+                                                <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[0.7rem] font-medium uppercase tracking-[0.16em] text-gray-300">
+                                                    {{ item.product.productCode }}
+                                                </span>
+                                                @if (item.size) {
+                                                    <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[0.7rem] font-medium uppercase tracking-[0.16em] text-gray-300">
+                                                        Talla {{ item.size }}
+                                                    </span>
+                                                }
+                                                <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[0.7rem] font-medium uppercase tracking-[0.16em] text-gray-300">
+                                                    Cantidad {{ item.quantity }}
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="shrink-0 text-left sm:text-right">
+                                            <p class="text-xs uppercase tracking-[0.2em] text-gray-500">
+                                                Precio
+                                            </p>
+                                            <p class="mt-1 text-sm font-semibold text-white">
+                                                {{ formatPrice(item.priceAtMoment) }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+                        <aside class="space-y-4">
+                            <div class="rounded-2xl border border-white/10 bg-white/[0.03] p-4 shadow-lg backdrop-blur-sm sm:p-5">
+                                <div class="flex items-start gap-3">
+                                    <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/10 bg-black/40 text-gray-200">
+                                        <i class="fa-solid fa-location-dot"></i>
+                                    </span>
+                                    <div class="min-w-0">
+                                        <p class="text-xs font-semibold uppercase tracking-[0.24em] text-gray-500">
+                                            Entrega
+                                        </p>
+                                        <p class="mt-2 break-words text-sm font-semibold text-white">
+                                            {{ order.shippingAddress }}
+                                        </p>
+                                        <p class="mt-1 text-xs font-semibold uppercase tracking-[0.18em] text-gray-400">
+                                            {{ order.city }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="rounded-2xl border border-white/10 bg-white/[0.03] p-4 shadow-lg backdrop-blur-sm sm:p-5">
+                                <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
+                                    <div>
+                                        <p class="text-xs font-semibold uppercase tracking-[0.24em] text-gray-500">
+                                            Metodo de envio
+                                        </p>
+                                        <p class="mt-2 text-sm font-semibold text-white">
+                                            {{ order.shippingMethod }}
+                                        </p>
+                                    </div>
+
+                                    <div>
+                                        <p class="text-xs font-semibold uppercase tracking-[0.24em] text-gray-500">
+                                            Metodo de pago
+                                        </p>
+                                        <p class="mt-2 text-sm font-semibold text-white">
+                                            {{ order.paymentMethod }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="rounded-2xl border border-white/10 bg-white px-4 py-4 text-black shadow-xl sm:px-5">
+                                <p class="text-xs font-semibold uppercase tracking-[0.24em] text-gray-500">
+                                    Total pagado
+                                </p>
+                                <p class="mt-2 text-2xl font-semibold">
+                                    {{ formatPrice(order.total) }}
+                                </p>
+                            </div>
+                        </aside>
+                    </div>
+                </article>
+            }
+        </div>
+    } @else {
+        <div class="flex min-h-72 items-center justify-center rounded-3xl border border-gray-800 bg-[linear-gradient(180deg,rgba(17,24,39,0.92),rgba(0,0,0,0.98))] px-5 py-10 text-center shadow-xl sm:px-6 md:px-8">
+            <div class="max-w-md">
+                <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-full border border-white/10 bg-white/5 text-xl text-gray-200">
+                    <i class="fa-solid fa-receipt"></i>
+                </div>
+                <h3 class="mt-4 text-xl font-semibold text-white">
+                    Aun no tienes ordenes
+                </h3>
+                <p class="mt-2 text-sm leading-6 text-gray-400 sm:text-base">
+                    Cuando finalices una compra, tus pedidos apareceran aqui para que puedas consultar su estado.
+                </p>
+            </div>
+        </div>
+    }
+</section>

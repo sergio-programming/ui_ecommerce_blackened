@@ -30,6 +30,7 @@ export class UserForm implements OnInit {
   readonly userForm = this.fb.nonNullable.group({
     fullName: ['', [Validators.required, Validators.minLength(3)]],
     email: ['', [Validators.required, Validators.email]],
+    documentNumber: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(10)]],
     password: ['', [Validators.required, Validators.minLength(8)]],
     role: ['', [Validators.required]]
   });
@@ -52,12 +53,13 @@ export class UserForm implements OnInit {
 
     if (data) {
       this.userToEdit.set(data);
-      this.userForm.get('password')?.clearAsyncValidators();
+      this.userForm.get('password')?.clearValidators();
       this.userForm.get('password')?.updateValueAndValidity();
 
       this.userForm.patchValue({
         fullName: data.fullName,
         email: data.email,
+        documentNumber: data.documentNumber,
         role: data.role
       })
     }

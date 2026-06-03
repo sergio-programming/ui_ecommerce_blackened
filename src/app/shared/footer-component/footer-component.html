@@ -1,0 +1,98 @@
+<footer class="border-t border-gray-800 bg-black px-4 py-10 text-white md:px-8">
+    @if (!currentUser || currentUser.role === 'user') {
+        <div class="mx-auto grid max-w-6xl gap-6 md:grid-cols-3">
+            <div class="flex h-full flex-col rounded-2xl border border-gray-800 bg-gray-950/40 p-6">
+                <h3 class="text-xl font-bold">Sobre Nosotros</h3>
+                <p class="mt-4 text-sm leading-7 text-gray-300 md:text-base">
+                    En Blackened Camisetas, ofrecemos productos de alta calidad para los amantes
+                    del Heavy Metal. Encuentra aqui tus camisetas y discos favoritos.
+                </p>
+            </div>
+
+            <div class="flex h-full flex-col rounded-2xl border border-gray-800 bg-gray-950/40 p-6">
+                <h3 class="text-xl font-bold">Secciones</h3>
+                <nav class="mt-4 flex flex-col gap-3">
+                    @for (link of links; track $index) {
+                        <a
+                            [routerLink]="link.path"
+                            routerLinkActive="text-white border-gray-500 bg-gray-900"
+                            [routerLinkActiveOptions]="{ exact: link.path === '/' }"
+                            class="flex items-center gap-3 rounded-lg border border-transparent px-3 py-2 text-sm font-semibold text-gray-300 transition-colors duration-200 hover:border-gray-700 hover:bg-gray-900 hover:text-white md:text-base"
+                        >
+                            <i [class]="link.icon"></i>
+                            <span>{{ link.label }}</span>
+                        </a>
+                    }
+                </nav>
+            </div>
+
+            <div class="flex h-full flex-col rounded-2xl border border-gray-800 bg-gray-950/40 p-6">
+                <h3 class="text-xl font-bold">Contactanos</h3>
+                <div class="mt-4 flex flex-col gap-4 text-sm text-gray-300 md:text-base">
+                    <a
+                        href="mailto:BlackenedCamisetas@gmail.com"
+                        class="flex items-center gap-3 transition-colors duration-200 hover:text-white"
+                    >
+                        <i class="fa-solid fa-envelope"></i>
+                        <span class="break-all">BlackenedCamisetas@gmail.com</span>
+                    </a>
+
+                    <a
+                        href="mailto:spedraza1003@gmail.com"
+                        class="flex items-center gap-3 transition-colors duration-200 hover:text-white"
+                    >
+                        <i class="fa-solid fa-envelope"></i>
+                        <span class="break-all">spedraza1003@gmail.com</span>
+                    </a>
+
+                    <a
+                        href="https://wa.me/573022773679"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="flex items-center gap-3 transition-colors duration-200 hover:text-white"
+                    >
+                        <i class="fa-brands fa-whatsapp"></i>
+                        <span>3022773679</span>
+                    </a>
+
+                    <div class="flex items-center gap-3">
+                        <i class="fa-solid fa-location-dot"></i>
+                        <span>Bogota, Colombia</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    } @else {
+        <div class="mx-auto grid max-w-4xl gap-6 sm:grid-cols-2">
+            <div class="flex h-full flex-col items-center rounded-2xl border border-gray-800 bg-gray-950/40 p-6 text-center sm:items-start sm:text-left">
+                <div class="flex items-center gap-3">
+                    <img
+                        src="/logo.jpg"
+                        alt="Logo"
+                        class="h-10 w-10 rounded-full object-cover"
+                    >
+                    <span class="text-xl font-bold">Blackened Camisetas</span>
+                </div>
+                <p class="mt-4 text-sm leading-7 text-gray-300 md:text-base">Panel de gestion de la aplicacion</p>
+                <p class="mt-3 text-sm text-gray-400">&copy; 2026 Derechos reservados</p>
+            </div>
+
+            <div class="flex h-full flex-col rounded-2xl border border-gray-800 bg-gray-950/40 p-6">
+                <h3 class="text-center text-xl font-bold sm:text-left">Secciones</h3>
+                <nav class="mt-4 flex flex-col gap-3">
+                    @for (link of links; track $index) {
+                        <a
+                            [routerLink]="link.path"
+                            routerLinkActive="text-white border-gray-500 bg-gray-900"
+                            [routerLinkActiveOptions]="{ exact: link.path === '/' }"
+                            class="flex items-center justify-center gap-3 rounded-lg border border-transparent px-3 py-2 text-sm font-semibold text-gray-300 transition-colors duration-200 hover:border-gray-700 hover:bg-gray-900 hover:text-white sm:justify-start md:text-base"
+                        >
+                            <i [class]="link.icon"></i>
+                            <span>{{ link.label }}</span>
+                        </a>
+                    }
+                </nav>
+            </div>
+        </div>
+    }
+</footer>

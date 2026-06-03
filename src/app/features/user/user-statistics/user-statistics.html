@@ -1,0 +1,35 @@
+<section class="overflow-hidden rounded-3xl border border-gray-800 bg-gradient-to-br from-gray-950 via-black to-gray-900 text-white shadow-2xl">
+    <div class="px-6 py-8 md:px-10 md:py-12">
+        <div class="flex flex-col items-center gap-4 sm:flex-row sm:justify-center sm:gap-6">
+            <div class="flex h-24 w-24 items-center justify-center rounded-full border border-gray-700 bg-white/5 shadow-[0_0_25px_rgba(255,255,255,0.08)] md:h-28 md:w-28">
+                <i class="fa-solid fa-users text-4xl text-gray-200 md:text-5xl"></i>
+            </div>
+            <h1 class="section-title text-center text-3xl font-semibold sm:text-4xl md:text-5xl">
+                Estadísticas de Usuarios
+            </h1>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 gap-5 px-6 pb-8 sm:grid-cols-2 md:px-10 md:pb-10 xl:grid-cols-4">
+        <div class="rounded-2xl border border-gray-800 bg-[#161b22] p-6 shadow-lg">
+            <h3 class="text-sm italic text-gray-400">Total Usuarios Registrados</h3>
+            <p class="mt-3 text-3xl font-bold text-white">{{ getTotalUsers() }}</p>
+        </div>
+
+        <div class="rounded-2xl border border-gray-800 bg-[#161b22] p-6 shadow-lg">
+            <h3 class="text-sm italic text-blue-400">Usuarios Admin</h3>
+            <p class="mt-3 text-3xl font-bold text-blue-400">{{ adminUsers().length }}</p>
+        </div>
+
+        <div class="rounded-2xl border border-gray-800 bg-[#161b22] p-6 shadow-lg">
+            <h3 class="text-sm italic text-yellow-400">Usuarios Staff</h3>
+            <p class="mt-3 text-3xl font-bold text-yellow-400">{{ staffUsers().length }}</p>
+        </div>
+
+        <div class="rounded-2xl border border-gray-800 bg-[#161b22] p-6 shadow-lg">
+            <h3 class="text-sm italic text-green-400">Usuarios Clientes</h3>
+            <p class="mt-3 text-3xl font-bold text-green-400">{{ normalUsers().length }}</p>
+        </div>
+    </div>
+
+</section>

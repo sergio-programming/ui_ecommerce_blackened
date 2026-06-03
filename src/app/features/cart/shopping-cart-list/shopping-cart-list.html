@@ -1,0 +1,305 @@
+<section class="flex flex-col gap-6 text-white md:gap-8">
+    <div class="overflow-hidden rounded-3xl border border-gray-800 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.08),transparent_32%),linear-gradient(135deg,rgba(17,24,39,0.98),rgba(0,0,0,1)_58%,rgba(17,24,39,0.96))] shadow-2xl">
+        <div class="flex flex-col gap-5 px-5 py-6 sm:px-8 md:px-10 md:py-8 lg:flex-row lg:items-center lg:justify-between">
+            <div class="space-y-2">
+                <span class="inline-flex rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.24em] text-gray-300">
+                    Blackened Cart
+                </span>
+                <div class="space-y-1">
+                    <h1 class="text-3xl font-semibold [text-shadow:0_0_12px_rgba(255,255,255,0.18)] sm:text-4xl">
+                        Carrito de compras
+                    </h1>
+                    <p class="max-w-2xl text-sm leading-6 text-gray-300 sm:text-base">
+                        Revisa tus productos seleccionados antes de continuar con el pedido.
+                    </p>
+                </div>
+            </div>
+
+            <button
+                type="button"
+                (click)="onGoToHome()"
+                class="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/10 px-5 py-3 text-sm font-semibold text-white shadow-lg backdrop-blur-sm cursor-pointer transition hover:border-white/20 hover:bg-white/15 focus:outline-none focus:ring-2 focus:ring-white/30 max-lg:w-full"
+            >
+                <i class="fa-solid fa-arrow-left-long text-sm"></i>
+                Seguir comprando
+            </button>
+        </div>
+    </div>
+
+    @if (message()) {
+        <div class="flex items-start gap-3 rounded-2xl border border-amber-400/35 bg-[linear-gradient(135deg,rgba(24,24,27,0.98),rgba(0,0,0,0.94))] px-4 py-3 text-sm text-gray-100 shadow-[0_18px_45px_rgba(0,0,0,0.28),inset_0_1px_0_rgba(255,255,255,0.08)]">
+            <span class="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-amber-300/40 bg-amber-400/15 text-amber-200">
+                <i class="fa-solid fa-circle-info text-[0.7rem]"></i>
+            </span>
+            <span class="leading-5 text-gray-100">{{ message() }}</span>
+        </div>
+    }
+
+    @if (isLoading()) {
+        <div class="flex min-h-64 items-center justify-center rounded-3xl border border-gray-800 bg-[linear-gradient(180deg,rgba(17,24,39,0.92),rgba(0,0,0,0.98))] px-6 text-center shadow-xl">
+            <div class="space-y-3">
+                <div class="mx-auto h-11 w-11 animate-spin rounded-full border-2 border-white/15 border-t-white"></div>
+                <p class="text-sm uppercase tracking-[0.28em] text-gray-300">
+                    Cargando carrito...
+                </p>
+            </div>
+        </div>
+    } @else if (cartItems().length === 0) {
+        <div class="flex min-h-80 items-center justify-center rounded-3xl border border-gray-800 bg-[linear-gradient(180deg,rgba(17,24,39,0.92),rgba(0,0,0,0.98))] px-5 py-12 text-center shadow-2xl">
+            <div class="mx-auto max-w-md space-y-5">
+                <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-2xl text-gray-200">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                </div>
+                <div class="space-y-2">
+                    <h2 class="text-2xl font-semibold text-white">Tu carrito esta vacio</h2>
+                    <p class="text-sm leading-6 text-gray-300">
+                        Agrega productos para verlos aqui y continuar con tu compra.
+                    </p>
+                </div>
+                <button
+                    type="button"
+                    (click)="onGoToHome()"
+                    class="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/10 px-5 py-3 text-sm font-semibold text-white shadow-lg transition hover:border-white/20 hover:bg-white/15 focus:outline-none focus:ring-2 focus:ring-white/30"
+                >
+                    <i class="fa-solid fa-arrow-left-long text-sm"></i>
+                    Ir a comprar
+                </button>
+            </div>
+        </div>
+    } @else {
+        <div class="grid gap-6 lg:grid-cols-12">
+            <div class="lg:col-span-8">
+                <div class="overflow-hidden rounded-3xl border border-gray-800 bg-[linear-gradient(180deg,rgba(17,24,39,0.92),rgba(0,0,0,0.98))] shadow-2xl">
+                    <div class="border-b border-gray-800 px-5 py-4 sm:px-6">
+                        <div class="flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
+                            <h2 class="text-xl font-semibold text-white">Items del carrito</h2>
+                            <span class="text-sm uppercase tracking-[0.22em] text-gray-500">
+                                {{ cartItems().length }} {{ cartItems().length === 1 ? 'articulo' : 'articulos' }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="hidden md:block">
+                        <div class="grid grid-cols-12 gap-4 border-b border-gray-800 bg-white/[0.03] px-6 py-4 text-left text-xs font-semibold uppercase tracking-[0.24em] text-gray-400">
+                            <span class="col-span-5">Producto</span>
+                            <span class="col-span-2 text-right">Precio</span>
+                            <span class="col-span-2 text-center">Cantidad</span>
+                            <span class="col-span-2 text-right">Subtotal</span>
+                            <span class="col-span-1 text-right">Accion</span>
+                        </div>
+
+                        <div>
+                            @for (item of cartItems(); track $index) {
+                                <div class="grid grid-cols-12 items-center gap-4 border-b border-gray-800/80 px-6 py-5 transition last:border-b-0 hover:bg-white/[0.03]">
+                                    <div class="col-span-5 flex min-w-0 items-center gap-4">
+                                        @if (item.product.image) {
+                                            <img
+                                                class="h-16 w-16 shrink-0 rounded-xl border border-white/10 object-cover"
+                                                [src]="item.product.image"
+                                                [alt]="item.product.description"
+                                            >
+                                        } @else {
+                                            <div class="flex h-16 w-16 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-gray-400">
+                                                <i class="fa-solid fa-shirt text-lg"></i>
+                                            </div>
+                                        }
+
+                                        <div class="min-w-0 space-y-1">
+                                            <span class="block truncate text-base font-semibold text-white">{{ item.product.productCode }}</span>
+                                            <span class="block truncate text-sm text-gray-300">{{ item.product.description }}</span>
+                                            @if (item.size) {
+                                                <span class="inline-flex rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-gray-200">
+                                                    Talla {{ item.size }}
+                                                </span>
+                                            }
+                                        </div>
+                                    </div>
+
+                                    <div class="col-span-2 text-right text-sm text-gray-300">
+                                        {{ formatPrice(item.priceAtMoment) }}
+                                    </div>
+
+                                    <div class="col-span-2 text-center">
+                                        <div class="inline-flex h-10 items-center overflow-hidden rounded-xl border border-white/10 bg-white/5 shadow-inner shadow-black/20">
+                                            <button
+                                                type="button"
+                                                (click)="onUpdateCartItemQuantity(cart()!._id, item, item.quantity - 1)"
+                                                [disabled]="item.quantity <= 1 || updatingItemId() === item._id"
+                                                class="inline-flex h-10 w-9 cursor-pointer items-center justify-center text-gray-300 transition hover:bg-white/10 hover:text-white focus:outline-none focus:ring-2 focus:ring-white/20 disabled:cursor-not-allowed disabled:text-gray-600 disabled:hover:bg-transparent"
+                                                title="Disminuir cantidad"
+                                            >
+                                                <i class="fa-solid fa-minus text-xs"></i>
+                                            </button>
+                                            <span class="inline-flex h-10 min-w-10 items-center justify-center border-x border-white/10 px-3 text-sm font-semibold text-white">
+                                                @if (updatingItemId() === item._id) {
+                                                    <i class="fa-solid fa-spinner animate-spin text-xs text-gray-300"></i>
+                                                } @else {
+                                                    {{ item.quantity }}
+                                                }
+                                            </span>
+                                            <button
+                                                type="button"
+                                                (click)="onUpdateCartItemQuantity(cart()!._id, item, item.quantity + 1)"
+                                                [disabled]="updatingItemId() === item._id"
+                                                class="inline-flex h-10 w-9 cursor-pointer items-center justify-center text-gray-300 transition hover:bg-white/10 hover:text-white focus:outline-none focus:ring-2 focus:ring-white/20 disabled:cursor-not-allowed disabled:text-gray-600 disabled:hover:bg-transparent"
+                                                title="Aumentar cantidad"
+                                            >
+                                                <i class="fa-solid fa-plus text-xs"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-span-2 text-right text-sm font-semibold text-white">
+                                        {{ calculateSubtotal(item.priceAtMoment, item.quantity) }}
+                                    </div>
+
+                                    <div class="col-span-1 flex justify-end">
+                                        <button
+                                            type="button"
+                                            (click)="onDeleteCartItem(cart()!._id, item._id)"
+                                            class="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-rose-500/20 bg-rose-500/10 text-rose-200 transition cursor-pointer hover:bg-rose-500/20 focus:outline-none focus:ring-2 focus:ring-rose-400/30"
+                                            title="Eliminar item"
+                                        >
+                                            <i class="fa-solid fa-trash text-sm"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="grid gap-4 p-4 md:hidden">
+                        @for (item of cartItems(); track $index) {
+                            <article class="border-b border-gray-800/80 pb-4 last:border-b-0 last:pb-0">
+                                <div class="flex gap-4">
+                                    @if (item.product.image) {
+                                        <img
+                                            class="h-20 w-20 shrink-0 rounded-xl border border-white/10 object-cover"
+                                            [src]="item.product.image"
+                                            [alt]="item.product.description"
+                                        >
+                                    } @else {
+                                        <div class="flex h-20 w-20 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-gray-400">
+                                            <i class="fa-solid fa-shirt text-xl"></i>
+                                        </div>
+                                    }
+
+                                    <div class="min-w-0 flex-1 space-y-2">
+                                        <div>
+                                            <h2 class="break-words text-base font-semibold text-white">{{ item.product.productCode }}</h2>
+                                            <p class="break-words text-sm leading-5 text-gray-300">{{ item.product.description }}</p>
+                                        </div>
+                                        <div class="flex flex-wrap gap-2">
+                                            @if (item.size) {
+                                                <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-gray-200">
+                                                    Talla {{ item.size }}
+                                                </span>
+                                            }
+                                            <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-gray-200">
+                                                Cant. {{ item.quantity }}
+                                            </span>
+                                        </div>
+                                        <div class="inline-flex h-10 w-fit items-center overflow-hidden rounded-xl border border-white/10 bg-white/5 shadow-inner shadow-black/20">
+                                            <button
+                                                type="button"
+                                                (click)="onUpdateCartItemQuantity(cart()!._id, item, item.quantity - 1)"
+                                                [disabled]="item.quantity <= 1 || updatingItemId() === item._id"
+                                                class="inline-flex h-10 w-10 cursor-pointer items-center justify-center text-gray-300 transition hover:bg-white/10 hover:text-white focus:outline-none focus:ring-2 focus:ring-white/20 disabled:cursor-not-allowed disabled:text-gray-600 disabled:hover:bg-transparent"
+                                                title="Disminuir cantidad"
+                                            >
+                                                <i class="fa-solid fa-minus text-xs"></i>
+                                            </button>
+                                            <span class="inline-flex h-10 min-w-11 items-center justify-center border-x border-white/10 px-3 text-sm font-semibold text-white">
+                                                @if (updatingItemId() === item._id) {
+                                                    <i class="fa-solid fa-spinner animate-spin text-xs text-gray-300"></i>
+                                                } @else {
+                                                    {{ item.quantity }}
+                                                }
+                                            </span>
+                                            <button
+                                                type="button"
+                                                (click)="onUpdateCartItemQuantity(cart()!._id, item, item.quantity + 1)"
+                                                [disabled]="updatingItemId() === item._id"
+                                                class="inline-flex h-10 w-10 cursor-pointer items-center justify-center text-gray-300 transition hover:bg-white/10 hover:text-white focus:outline-none focus:ring-2 focus:ring-white/20 disabled:cursor-not-allowed disabled:text-gray-600 disabled:hover:bg-transparent"
+                                                title="Aumentar cantidad"
+                                            >
+                                                <i class="fa-solid fa-plus text-xs"></i>
+                                            </button>
+                                        </div>
+                                        <button
+                                            type="button"
+                                            (click)="onDeleteCartItem(cart()!._id, item._id)"
+                                            class="inline-flex items-center justify-center gap-2 rounded-xl border border-rose-500/20 bg-rose-500/10 px-3 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-rose-200 transition hover:bg-rose-500/20 focus:outline-none focus:ring-2 focus:ring-rose-400/30"
+                                        >
+                                            <i class="fa-solid fa-trash text-xs"></i>
+                                            Eliminar
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="mt-4 grid grid-cols-2 gap-3 text-sm">
+                                    <div class="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+                                        <p class="text-xs uppercase tracking-[0.2em] text-gray-500">Precio</p>
+                                        <p class="mt-1 font-semibold text-white">{{ formatPrice(item.priceAtMoment) }}</p>
+                                    </div>
+                                    <div class="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-right">
+                                        <p class="text-xs uppercase tracking-[0.2em] text-gray-500">Subtotal</p>
+                                        <p class="mt-1 font-semibold text-white">{{ calculateSubtotal(item.priceAtMoment, item.quantity) }}</p>
+                                    </div>
+                                </div>
+                            </article>
+                        }
+                    </div>
+
+                    <div class="border-t border-gray-800 px-5 py-4 sm:px-6">
+                        <button
+                            type="button"
+                            (click)="onDeleteCart(cart()!._id)"
+                            class="inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-2xl border border-rose-500/20 bg-rose-500/10 px-5 py-3 text-sm font-semibold text-rose-200 transition hover:bg-rose-500/20 focus:outline-none focus:ring-2 focus:ring-rose-400/30 sm:w-auto"
+                        >
+                            <i class="fa-solid fa-trash text-sm"></i>
+                            Eliminar carrito
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <aside class="lg:col-span-4">
+                <div class="sticky top-6 overflow-hidden rounded-3xl border border-gray-800 bg-[linear-gradient(180deg,rgba(17,24,39,0.94),rgba(0,0,0,0.98))] shadow-2xl">
+                    <div class="border-b border-gray-800 px-5 py-4 sm:px-6">
+                        <h2 class="text-xl font-semibold text-white">Resumen</h2>
+                    </div>
+
+                    <div class="space-y-5 p-5 sm:p-6">
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between gap-4 text-sm text-gray-300">
+                                <span>Productos</span>
+                                <span class="font-semibold text-white">{{ cartItems().length }}</span>
+                            </div>
+                            <div class="flex items-center justify-between gap-4 text-sm text-gray-300">
+                                <span>IVA</span>
+                                <span class="font-semibold text-white">Incluido</span>
+                            </div>
+                        </div>
+
+                        <div class="border-t border-gray-800 pt-5">
+                            <div class="flex items-end justify-between gap-4">
+                                <span class="text-sm uppercase tracking-[0.22em] text-gray-500">Total</span>
+                                <span class="text-2xl font-semibold text-white">{{ formatPrice(cart()?.total) }}</span>
+                            </div>
+                        </div>
+
+                        <button
+                            type="button"
+                            (click)="onGoToCheckoutForm()"
+                            class="inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white px-5 py-3 text-sm font-semibold text-black shadow-lg transition cursor-pointer hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-white/30"
+                        >
+                            <i class="fa-solid fa-box-open text-sm"></i>
+                            Proceder con el pedido
+                        </button>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    }
+</section>

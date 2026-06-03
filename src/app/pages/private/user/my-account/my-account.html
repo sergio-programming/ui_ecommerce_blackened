@@ -1,0 +1,135 @@
+<section class="overflow-hidden rounded-3xl border border-gray-800 bg-[linear-gradient(180deg,rgba(17,24,39,0.92),rgba(0,0,0,0.98))] text-white shadow-2xl">
+    <div class="border-b border-white/10 px-5 py-6 sm:px-6 md:px-8">
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+                <span class="inline-flex rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.24em] text-gray-400">
+                    Perfil
+                </span>
+                <h2 class="mt-3 text-2xl font-semibold sm:text-3xl">
+                    Informacion de la cuenta
+                </h2>
+                <p class="mt-2 text-sm leading-6 text-gray-300 sm:text-base">
+                    Estos son los datos registrados en tu perfil de Blackened Camisetas.
+                </p>
+            </div>
+
+            <div class="flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
+                @if (userProfile()) {
+                    <button
+                        type="button"
+                        (click)="onGoToUserEditingForm()"
+                        class="inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/10 bg-white px-5 py-3 text-sm font-semibold text-black shadow-lg cursor-pointer transition-colors duration-200 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-white/50 sm:w-auto"
+                    >
+                        <i class="fa-solid fa-pen-to-square"></i>
+                        <span>Editar cuenta</span>
+                    </button>
+                }
+
+                <div class="hidden h-14 w-14 items-center justify-center rounded-full border border-white/10 bg-white/5 text-xl text-gray-200 shadow-lg sm:flex">
+                    <i class="fa-solid fa-id-card"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (isLoading()) {
+        <div class="flex min-h-72 items-center justify-center px-5 py-10 text-center text-gray-300 sm:px-6 md:px-8">
+            <div class="flex flex-col items-center gap-3">
+                <i class="fa-solid fa-spinner animate-spin text-2xl text-gray-200"></i>
+                <p class="text-sm sm:text-base">Cargando informacion de tu cuenta...</p>
+            </div>
+        </div>
+    } @else if (userProfile()) {
+        <div class="px-5 py-6 sm:px-6 md:px-8">
+            <div class="grid gap-4 md:grid-cols-2">
+                <article class="rounded-2xl border border-white/10 bg-white/[0.03] p-4 shadow-lg backdrop-blur-sm sm:p-5 md:col-span-2">
+                    <div class="flex flex-col gap-4 sm:flex-row sm:items-center">
+                        <div class="flex h-16 w-16 shrink-0 items-center justify-center rounded-full border border-white/10 bg-black/40 text-2xl font-semibold text-white">
+                            {{ userProfile()?.fullName?.charAt(0) }}
+                        </div>
+
+                        <div class="min-w-0">
+                            <p class="text-xs font-semibold uppercase tracking-[0.24em] text-gray-500">
+                                Nombre completo
+                            </p>
+                            <h3 class="mt-2 break-words text-xl font-semibold text-white sm:text-2xl">
+                                {{ userProfile()?.fullName }}
+                            </h3>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="rounded-2xl border border-white/10 bg-white/[0.03] p-4 shadow-lg backdrop-blur-sm sm:p-5">
+                    <div class="flex items-start gap-3">
+                        <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/10 bg-black/40 text-gray-200">
+                            <i class="fa-solid fa-envelope"></i>
+                        </span>
+                        <div class="min-w-0">
+                            <p class="text-xs font-semibold uppercase tracking-[0.24em] text-gray-500">
+                                Correo electronico
+                            </p>
+                            <p class="mt-2 break-words text-sm font-medium text-gray-100 sm:text-base">
+                                {{ userProfile()?.email }}
+                            </p>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="rounded-2xl border border-white/10 bg-white/[0.03] p-4 shadow-lg backdrop-blur-sm sm:p-5">
+                    <div class="flex items-start gap-3">
+                        <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/10 bg-black/40 text-gray-200">
+                            <i class="fa-solid fa-calendar-days"></i>
+                        </span>
+                        <div class="min-w-0">
+                            <p class="text-xs font-semibold uppercase tracking-[0.24em] text-gray-500">
+                                Registrado desde
+                            </p>
+                            <p class="mt-2 break-words text-sm font-medium text-gray-100 sm:text-base">
+                                {{ formatDate(userProfile()?.createdAt) }}
+                            </p>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="rounded-2xl border border-white/10 bg-white/[0.03] p-4 shadow-lg backdrop-blur-sm sm:p-5 md:col-span-2">
+                    <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                        <div>
+                            <p class="text-xs font-semibold uppercase tracking-[0.24em] text-gray-500">
+                                Estado de la cuenta
+                            </p>
+                            <p class="mt-2 text-sm leading-6 text-gray-300 sm:text-base">
+                                {{ userProfile()?.isActive ? 'Tu perfil se encuentra disponible para comprar y consultar pedidos.' : 'Tu perfil se encuentra inactivo en este momento.' }}
+                            </p>
+                        </div>
+
+                        @if (userProfile()?.isActive) {
+                            <span class="inline-flex w-full items-center justify-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-2 text-sm font-semibold text-emerald-100 sm:w-auto">
+                                <i class="fa-solid fa-circle-check"></i>
+                                Activa
+                            </span>
+                        } @else {
+                            <span class="inline-flex w-full items-center justify-center gap-2 rounded-full border border-amber-500/20 bg-amber-500/10 px-4 py-2 text-sm font-semibold text-amber-100 sm:w-auto">
+                                <i class="fa-solid fa-circle-pause"></i>
+                                Inactiva
+                            </span>
+                        }
+                    </div>
+                </article>
+            </div>
+        </div>
+    } @else {
+        <div class="flex min-h-72 items-center justify-center px-5 py-10 text-center text-gray-300 sm:px-6 md:px-8">
+            <div class="max-w-md">
+                <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-full border border-white/10 bg-white/5 text-xl text-gray-200">
+                    <i class="fa-solid fa-circle-info"></i>
+                </div>
+                <h3 class="mt-4 text-xl font-semibold text-white">
+                    No pudimos cargar tu perfil
+                </h3>
+                <p class="mt-2 text-sm leading-6 text-gray-400 sm:text-base">
+                    Intenta actualizar la pagina o vuelve a iniciar sesion para consultar tus datos.
+                </p>
+            </div>
+        </div>
+    }
+</section>

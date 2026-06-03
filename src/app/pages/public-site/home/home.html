@@ -1,0 +1,228 @@
+<div class="flex flex-col gap-8 md:gap-10">
+    <!-- Seccion principal -->
+    <section class="overflow-hidden rounded-3xl border border-gray-800 bg-gradient-to-br from-gray-950 via-black to-gray-900 text-white shadow-2xl">
+        <div class="p-6 md:p-10">
+            <div class="flex flex-col items-center gap-4 sm:flex-row sm:justify-center sm:gap-6">
+                <img
+                    src="/logo.jpg"
+                    alt="Logo Blackened Camisetas"
+                    class="h-28 w-28 rounded-full border border-gray-700 object-cover shadow-[0_0_25px_rgba(255,255,255,0.08)] md:h-36 md:w-36"
+                >
+                <h1 class="section-title text-center text-3xl font-semibold sm:text-4xl md:text-5xl">
+                    Blackened Camisetas
+                </h1>
+            </div>
+
+            <div class="mt-8 w-full">
+                <h2 class="section-title text-center text-2xl font-semibold md:text-3xl">
+                    ¿Quienes Somos?
+                </h2>
+                <p class="mt-5 w-full text-sm leading-7 text-gray-300 sm:text-base md:text-lg">
+                    Somos una marca enfocada en el diseño y la comercializacion de
+                    camisetas para los fanaticos del Heavy Metal, asi como en la distribucion
+                    de discos de las principales bandas del genero. Nacemos con el proposito
+                    de ofrecer productos con estampados llamativos y una estetica autentica,
+                    pensados especialmente para quienes viven y sienten esta cultura musical.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seccion productos destacados -->
+    <section class="rounded-3xl border border-gray-800 bg-black px-4 py-8 text-white shadow-2xl sm:px-6 md:px-8 md:py-10">
+        <div class="mx-auto max-w-6xl">
+            <div class="mx-auto max-w-3xl text-center">
+                <p class="text-xs font-semibold uppercase tracking-[0.28em] text-gray-500">
+                    Catalogo Blackened
+                </p>
+                <h2 class="mt-3 text-2xl font-semibold [text-shadow:0_0_12px_rgba(255,255,255,0.22)] md:text-3xl">
+                    Productos Destacados
+                </h2>
+                <p class="mt-4 text-sm leading-7 text-gray-300 sm:text-base">
+                    Una seleccion de camisetas y discos con la energia metalera que define nuestra tienda.
+                </p>
+            </div>
+
+            @if (isLoading()) {
+                <div class="mt-8 flex min-h-56 items-center justify-center rounded-2xl bg-gray-950/70 px-6 text-center text-gray-300 shadow-xl">
+                    Cargando productos destacados...
+                </div>
+            } @else if (featuredProducts().length === 0) {
+                <div class="mt-8 flex min-h-56 items-center justify-center rounded-2xl bg-gray-950/70 px-6 text-center text-gray-300 shadow-xl">
+                    No hay productos destacados disponibles en este momento.
+                </div>
+            } @else {
+                <div class="mt-8 grid items-start gap-5 sm:grid-cols-2 xl:grid-cols-3">
+                    @for (product of featuredProducts(); track product._id) {
+                        <article class="group mx-auto flex w-full max-w-[19rem] self-start flex-col overflow-hidden rounded-2xl shadow-[0_18px_40px_rgba(0,0,0,0.24)] transition duration-300 hover:-translate-y-1.5 hover:shadow-[0_24px_50px_rgba(0,0,0,0.35)] max-sm:hover:translate-y-0">
+                            <div class="relative overflow-hidden rounded-t-2xl bg-neutral-100">
+                                <img
+                                    [src]="product.image"
+                                    [alt]="product.description"
+                                    class="h-[20rem] w-full object-contain p-4 transition duration-300 group-hover:scale-[1.03] group-hover:opacity-95 sm:h-[22rem] max-sm:group-hover:scale-100 max-sm:group-hover:opacity-100"
+                                >
+
+                                <div class="absolute left-4 top-4 rounded-full border border-white/15 bg-black/70 px-3 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-gray-200 backdrop-blur-sm">
+                                    {{ product.category === 'CD' ? 'Disco' : 'Camiseta' }}
+                                </div>
+                            </div>
+
+                            <div class="flex flex-col gap-3 rounded-b-2xl border-t border-gray-800 bg-[linear-gradient(180deg,rgba(17,24,39,0.92),rgba(0,0,0,0.98))] p-4 text-white">
+                                <div class="space-y-2">
+                                    <p class="h-12 text-base font-semibold leading-6 text-white md:text-lg">
+                                        {{ product.description }}
+                                    </p>
+
+                                    <div class="flex flex-wrap items-center gap-2 text-xs text-gray-300">
+                                        <span class="rounded-full border border-gray-700 bg-gray-900/80 px-2.5 py-1">
+                                            Codigo: {{ product.productCode }}
+                                        </span>
+                                        <span class="rounded-full border border-gray-700 bg-gray-900/80 px-2.5 py-1">
+                                            Stock total: {{ getTotalStock(product) }}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="space-y-2">
+                                    <p class="text-xs font-semibold uppercase tracking-[0.24em] text-gray-400">
+                                        {{ product.category === 'CD' ? 'Formato disponible' : 'Tallas disponibles' }}
+                                    </p>
+
+                                    <div class="flex flex-wrap gap-2">
+                                        @if (product.category === 'CD') {
+                                            <span class="inline-flex items-center justify-center rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs leading-4 text-gray-200 backdrop-blur-sm">
+                                                CD original
+                                            </span>
+                                            <span class="inline-flex items-center justify-center rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs leading-4 text-gray-200 backdrop-blur-sm">
+                                                Stock listo para entrega
+                                            </span>
+                                        } @else {
+                                            @for (item of product.inventory; track $index) {
+                                                @if (item.stock > 0) {
+                                                    <span class="inline-flex items-center justify-center rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs leading-4 text-gray-200 backdrop-blur-sm max-sm:w-full max-sm:justify-start">
+                                                        {{ item.size }} - {{ item.stock }} disponibles
+                                                    </span>
+                                                }
+                                            }
+                                        }
+                                    </div>
+                                </div>
+
+                                <div class="flex items-end justify-between gap-3 border-t border-gray-700 pt-3">
+                                    <div>
+                                        <p class="text-xs uppercase tracking-[0.24em] text-gray-500">
+                                            Precio
+                                        </p>
+                                        <p class="mt-1 text-xl font-bold text-white">
+                                            {{ formatPrice(product.price) }}
+                                        </p>
+                                    </div>
+
+                                    <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-[0.7rem] font-medium uppercase tracking-[0.18em] text-gray-200">
+                                        Estilo Blackened
+                                    </span>
+                                </div>
+                            </div>
+                        </article>
+                    }
+                </div>
+            }
+        </div>
+    </section>
+
+    <!-- Seccion carousel -->
+    <section class="carousel-section rounded-3xl border border-gray-800 bg-black/95 px-4 py-5 text-white shadow-2xl sm:px-6 md:px-8 md:py-7">
+        <div class="carousel-shell">
+            <div class="carousel-stage">
+                @for (image of carouselImages; track image.src; let index = $index) {
+                    <img
+                        [src]="image.src"
+                        [alt]="image.alt"
+                        class="carousel-image"
+                        [class.is-active]="currentSlide() === index"
+                    >
+                }
+
+                <div class="carousel-overlay"></div>
+
+                <button
+                    type="button"
+                    class="carousel-control left-3 sm:left-4"
+                    (click)="previousSlide()"
+                    aria-label="Imagen anterior"
+                >
+                    &#10094;
+                </button>
+
+                <button
+                    type="button"
+                    class="carousel-control right-3 sm:right-4"
+                    (click)="nextSlide()"
+                    aria-label="Siguiente imagen"
+                >
+                    &#10095;
+                </button>
+            </div>
+
+            <div class="mt-4 flex justify-center gap-3">
+                @for (image of carouselImages; track image.src; let index = $index) {
+                    <button
+                        type="button"
+                        class="carousel-dot"
+                        [class.is-active]="currentSlide() === index"
+                        (click)="goToSlide(index)"
+                        [attr.aria-label]="'Ir a la imagen ' + (index + 1)"
+                    ></button>
+                }
+            </div>
+        </div>
+    </section>
+
+    <!-- Seccion identidad -->
+    <section class="rounded-3xl border border-gray-800 bg-black px-6 py-8 text-white shadow-2xl md:px-8 md:py-10">
+        <div class="mx-auto max-w-6xl">
+            <h2 class="section-title text-center text-2xl font-semibold md:text-3xl">
+                Nuestra Identidad
+            </h2>
+
+            <div class="mt-8 grid gap-6 md:grid-cols-3">
+                <article class="identity-card">
+                    <h3 class="text-xl font-bold">Nuestra Mision</h3>
+                    <p class="mt-4 text-sm leading-7 text-gray-300 md:text-base">
+                        Ofrecer camisetas de alta calidad inspiradas en la cultura del Heavy
+                        Metal, brindando a los clientes una experiencia de compra accesible,
+                        moderna y satisfactoria, apoyada en el uso de herramientas digitales.
+                    </p>
+                </article>
+
+                <article class="identity-card">
+                    <h3 class="text-xl font-bold">Nuestra Vision</h3>
+                    <p class="mt-4 text-sm leading-7 text-gray-300 md:text-base">
+                        Blackened Camisetas busca consolidarse como una marca reconocida a
+                        nivel local y nacional en la venta de camisetas de la cultura Heavy
+                        Metal, destacandose por el servicio, la calidad de los productos y
+                        la innovacion.
+                    </p>
+                </article>
+
+                <article class="identity-card">
+                    <h3 class="text-xl font-bold">Nuestros Valores</h3>
+                    <ul class="mt-4 space-y-3 text-sm leading-7 text-gray-300 md:text-base">
+                        <li class="flex gap-3">
+                            <span class="mt-2 h-2 w-2 rounded-full bg-gray-400"></span>
+                            <span>Identidad: destacamos por mantener nuestra esencia en el estampado de nuestras camisetas.</span>
+                        </li>
+                        <li class="flex gap-3">
+                            <span class="mt-2 h-2 w-2 rounded-full bg-gray-400"></span>
+                            <span>Servicio: responsabilidad con las necesidades de los clientes y su satisfaccion.</span>
+                        </li>
+                        <li class="flex gap-3">
+                            <span class="mt-2 h-2 w-2 rounded-full bg-gray-400"></span>
+                            <span>Calidad: productos con materiales y estampados duraderos, creados con alto nivel de detalle.</span>
+                        </li>
+                    </ul>
+                </article>
+            </div>
+        </div>
+    </section>
+</div>

@@ -1,0 +1,180 @@
+<section class="mx-auto flex w-full max-w-6xl flex-col gap-6 text-white md:gap-8">
+    <div class="overflow-hidden rounded-3xl border border-gray-800 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.08),transparent_32%),linear-gradient(135deg,rgba(17,24,39,0.98),rgba(0,0,0,1)_58%,rgba(17,24,39,0.96))] shadow-2xl">
+        <div class="grid gap-8 px-5 py-6 sm:px-8 md:px-10 md:py-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-start">
+            <div class="space-y-5">
+                <span class="inline-flex rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.24em] text-gray-300">
+                    Blackened Admin
+                </span>
+
+                <div class="space-y-3">
+                    <h2 class="text-3xl font-semibold [text-shadow:0_0_12px_rgba(255,255,255,0.18)] sm:text-4xl">
+                        {{ userToEdit() ? 'Actualizar Usuario' : 'Crear Usuario' }}
+                    </h2>
+                    <p class="max-w-xl text-sm leading-6 text-gray-300 sm:text-base">
+                        {{ userToEdit()
+                            ? 'Modifica la información del usuario'
+                            : 'Agrega una nueva cuenta al sistema' }}
+                    </p>
+                </div>
+
+                <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+                    <div class="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-4 backdrop-blur-sm">
+                        <p class="text-[0.7rem] font-semibold uppercase tracking-[0.24em] text-gray-500">
+                            Estado del formulario
+                        </p>
+                        <p class="mt-2 text-sm text-gray-200">
+                            {{ userToEdit() ? 'Edición de usuario existente' : 'Registro de un nuevo usuario' }}
+                        </p>
+                    </div>
+
+                    <div class="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-4 backdrop-blur-sm">
+                        <p class="text-[0.7rem] font-semibold uppercase tracking-[0.24em] text-gray-500">
+                            Acción principal
+                        </p>
+                        <p class="mt-2 text-sm text-gray-200">
+                            {{ userToEdit() ? 'Guardar cambios' : 'Crear Cuenta' }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="rounded-3xl border border-white/10 bg-black/30 p-4 shadow-xl backdrop-blur-sm sm:p-6">
+                <form
+                    class="grid gap-5"
+                    [formGroup]="userForm"
+                    (ngSubmit)="onSubmit()"
+                >
+                    <div class="grid gap-5 md:grid-cols-2">
+                        <div class="md:col-span-2">
+                            <label
+                                for="userform-name"
+                                class="mb-2 block text-sm font-medium text-gray-200"
+                            >
+                                Nombre completo
+                            </label>
+                            <input
+                                id="userform-name"
+                                type="text"
+                                formControlName="fullName"
+                                placeholder="Ej: Juan Pérez"
+                                class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white outline-none transition placeholder:text-gray-500 focus:border-white/30 focus:bg-white/[0.07] focus:ring-2 focus:ring-white/20"
+                            >
+                            @if (userForm.get('fullName')?.invalid && userForm.get('fullName')?.touched) {
+                                <div class="mt-2 flex items-start gap-2 rounded-2xl border border-rose-500/20 bg-rose-500/10 px-3 py-2 text-sm text-rose-100">
+                                    <i class="fa-solid fa-triangle-exclamation mt-0.5 text-rose-300"></i>
+                                    <span>El nombre es obligatorio y debe tener al menos 3 caracteres.</span>
+                                </div>
+                            }
+                        </div>
+
+                        <div>
+                            <label
+                                for="userform-email"
+                                class="mb-2 block text-sm font-medium text-gray-200"
+                            >
+                                Correo electrónico
+                            </label>
+                            <input
+                                id="userform-email"
+                                type="email"
+                                formControlName="email"
+                                placeholder="tuemail@gmail.com"
+                                class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white outline-none transition placeholder:text-gray-500 focus:border-white/30 focus:bg-white/[0.07] focus:ring-2 focus:ring-white/20"
+                            >
+                            @if (userForm.get('email')?.invalid && userForm.get('email')?.touched) {
+                                <div class="mt-2 flex items-start gap-2 rounded-2xl border border-rose-500/20 bg-rose-500/10 px-3 py-2 text-sm text-rose-100">
+                                    <i class="fa-solid fa-triangle-exclamation mt-0.5 text-rose-300"></i>
+                                    <span>El email es obligatorio y debe ser válido.</span>
+                                </div>
+                            }
+                        </div>
+
+                        <div>
+                            <label
+                                for="userform-role"
+                                class="mb-2 block text-sm font-medium text-gray-200"
+                            >
+                                Rol
+                            </label>
+                            <select
+                                id="userform-role"
+                                formControlName="role"
+                                class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white outline-none transition focus:border-white/30 focus:bg-white/[0.07] focus:ring-2 focus:ring-white/20"
+                            >
+                                <option value="" disabled class="bg-gray-950 text-gray-400">Seleccionar</option>
+                                @for (role of roleOptions; track role) {
+                                    <option
+                                        [value]="role.value"
+                                        class="bg-gray-950 text-white"
+                                    >
+                                        {{ role.label }}
+                                    </option>
+                                }
+                            </select>
+                        </div>
+
+                        @if (!userToEdit()) {
+                            <div class="md:col-span-2">
+                                <label
+                                    for="userform-password"
+                                    class="mb-2 block text-sm font-medium text-gray-200"
+                                >
+                                    Contraseña
+                                </label>
+                                <input
+                                    id="userform-password"
+                                    type="password"
+                                    formControlName="password"
+                                    placeholder="********"
+                                    class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white outline-none transition placeholder:text-gray-500 focus:border-white/30 focus:bg-white/[0.07] focus:ring-2 focus:ring-white/20"
+                                >
+                                @if (userForm.get('password')?.invalid && userForm.get('password')?.touched) {
+                                    <div class="mt-2 flex items-start gap-2 rounded-2xl border border-rose-500/20 bg-rose-500/10 px-3 py-2 text-sm text-rose-100">
+                                        <i class="fa-solid fa-triangle-exclamation mt-0.5 text-rose-300"></i>
+                                        <span>La contraseña es obligatoria y debe tener al menos 8 caracteres.</span>
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
+
+                    @if (message()) {
+                        <div class="flex items-start gap-3 rounded-2xl border border-amber-500/20 bg-amber-500/10 px-4 py-3 text-sm text-amber-100 shadow-lg backdrop-blur-sm">
+                            <i class="fa-solid fa-circle-info mt-0.5 text-amber-300"></i>
+                            <span>{{ message() }}</span>
+                        </div>
+                    }
+
+                    <div class="flex flex-col gap-3 border-t border-white/10 pt-2 sm:flex-row sm:items-center sm:justify-between">
+                        <button
+                            type="submit"
+                            [disabled]="isLoading()"
+                            class="inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/10 px-5 py-3 text-sm font-semibold text-white shadow-lg backdrop-blur-sm cursor-pointer transition hover:border-white/20 hover:bg-white/15 focus:outline-none focus:ring-2 focus:ring-white/30 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+                        >
+                            <i
+                                class="fa-solid"
+                                [class.fa-floppy-disk]="userToEdit() && !isLoading()"
+                                [class.fa-user-plus]="!userToEdit() && !isLoading()"
+                                [class.fa-spinner]="isLoading()"
+                                [class.animate-spin]="isLoading()"
+                            ></i>
+                            {{ isLoading() ? 'Procesando...' : (userToEdit() ? 'Guardar cambios' : 'Crear usuario') }}
+                        </button>
+
+                        <div class="flex flex-col items-start gap-1 text-sm text-gray-400 sm:items-end">
+                            <span>{{ userToEdit() ? '¿Quieres volver al listado?' : '¿Prefieres cancelar el registro?' }}</span>
+                            <button
+                                type="button"
+                                (click)="onCancel()"
+                                class="inline-flex items-center gap-2 font-semibold text-gray-200 cursor-pointer transition hover:text-white"
+                            >
+                                <i class="fa-solid fa-arrow-left text-xs"></i>
+                                Regresar
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

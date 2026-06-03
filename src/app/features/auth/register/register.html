@@ -1,0 +1,88 @@
+<section class="auth-shell">
+    <div class="auth-card">
+        <div class="auth-copy">
+            <span class="auth-eyebrow">New Member</span>
+            <h2>Crea tu cuenta</h2>
+            <p>Regístrate para comprar más rápido, seguir tus envíos y guardar tu colección favorita.</p>
+        </div>
+
+        <form
+            class="auth-form"
+            [formGroup]="RegisterForm"
+            (ngSubmit)="onSignup()"
+        >
+            <div class="field-group">
+                <label for="register-name">Nombre completo</label>
+                <input
+                    id="register-name"
+                    type="text"
+                    formControlName="fullName"
+                    placeholder="Ej: Juan Pérez"
+                >
+            </div>
+            @if (RegisterForm.get('fullName')?.invalid && RegisterForm.get('fullName')?.touched) {
+                <div class="field-error">
+                    <span><i class="fa-solid fa-triangle-exclamation"></i> El nombre es obligatorio y debe tener al menos 3 caracteres.</span>
+                </div>
+            }
+
+            <div class="field-group">
+                <label for="register-email">Correo electrónico</label>
+                <input
+                    id="register-email"
+                    type="email"
+                    formControlName="email"
+                    placeholder="tuemail@gmail.com"
+                >
+            </div>
+            @if (RegisterForm.get('email')?.invalid && RegisterForm.get('email')?.touched) {
+                <div class="field-error">
+                    <span><i class="fa-solid fa-triangle-exclamation"></i> El email es obligatorio y debe ser válido.</span>
+                </div>
+            }
+
+            <div class="field-group">
+                <label for="register-password">Contraseña</label>
+                <input
+                    id="register-password"
+                    type="password"
+                    formControlName="password"
+                    placeholder="********"
+                >
+            </div>
+            @if (RegisterForm.get('password')?.invalid && RegisterForm.get('password')?.touched) {
+                <div class="field-error">
+                    <span><i class="fa-solid fa-triangle-exclamation"></i> La contraseña es obligatoria y debe tener al menos 8 caracteres.</span>
+                </div>
+            }
+
+            @if (message()) {
+                <div class="status-banner">
+                    {{ message() }}
+                </div>
+            }
+
+            <div class="auth-actions">
+                <button
+                    type="submit"
+                    class="primary-action"
+                    [disabled]="isLoading()"
+                >
+                    <i class="fa-solid fa-user-plus"></i>
+                    {{ isLoading() ? 'Creando cuenta...' : 'Registrarse' }}
+                </button>
+
+                <div class="auth-switch">
+                    <span>¿Ya tienes cuenta?</span>
+                    <button
+                        type="button"
+                        class="link-action"
+                        (click)="onGoToLogin()"
+                    >
+                        Regresa al login
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>

@@ -1,0 +1,85 @@
+<section class="overflow-hidden rounded-3xl border border-gray-800 bg-gradient-to-br from-gray-950 via-black to-gray-900 text-white shadow-2xl">
+    <div class="px-6 py-8 md:px-10 md:py-12">
+        <div class="flex flex-col items-center gap-4 sm:flex-row sm:justify-center sm:gap-6">
+            <div class="flex h-24 w-24 items-center justify-center rounded-full border border-gray-700 bg-white/5 shadow-[0_0_25px_rgba(255,255,255,0.08)] md:h-28 md:w-28">
+                <i class="fa-solid fa-receipt text-4xl text-gray-200 md:text-5xl"></i>
+            </div>
+
+            <h2 class="section-title text-center text-3xl font-semibold sm:text-4xl md:text-5xl">
+                Estadisticas de Ordenes
+            </h2>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 gap-5 px-6 pb-8 sm:grid-cols-2 md:px-10 md:pb-10 xl:grid-cols-3">
+        <div class="rounded-2xl border border-gray-800 bg-[#161b22] p-6 shadow-lg">
+            <div class="flex items-start justify-between gap-4">
+                <div>
+                    <h3 class="text-sm italic text-gray-400">Total Ordenes Generadas</h3>
+                    <p class="mt-3 text-3xl font-bold text-white">{{ getTotalOrders() }}</p>
+                </div>
+                <i class="fa-solid fa-clipboard-list text-xl text-gray-500"></i>
+            </div>
+        </div>
+
+        <div class="rounded-2xl border border-gray-800 bg-[#161b22] p-6 shadow-lg">
+            <div class="flex items-start justify-between gap-4">
+                <div>
+                    <h3 class="text-sm italic text-yellow-400">Total Ordenes Pendientes</h3>
+                    <p class="mt-3 text-3xl font-bold text-yellow-400">{{ getTotalOrdersByStatus('Pendiente') }}</p>
+                </div>
+                <i class="fa-solid fa-clock text-xl text-yellow-500/70"></i>
+            </div>
+        </div>
+
+        <div class="rounded-2xl border border-gray-800 bg-[#161b22] p-6 shadow-lg">
+            <div class="flex items-start justify-between gap-4">
+                <div>
+                    <h3 class="text-sm italic text-sky-400">Total Ordenes Enviadas</h3>
+                    <p class="mt-3 text-3xl font-bold text-sky-400">{{ getTotalOrdersByStatus('Enviada') }}</p>
+                </div>
+                <i class="fa-solid fa-truck-fast text-xl text-sky-500/70"></i>
+            </div>
+        </div>
+
+        <div class="rounded-2xl border border-gray-800 bg-[#161b22] p-6 shadow-lg">
+            <div class="flex items-start justify-between gap-4">
+                <div>
+                    <h3 class="text-sm italic text-green-400">Total Ordenes Entregadas</h3>
+                    <p class="mt-3 text-3xl font-bold text-green-400">{{ getTotalOrdersByStatus('Entregada') }}</p>
+                </div>
+                <i class="fa-solid fa-circle-check text-xl text-green-500/70"></i>
+            </div>
+        </div>
+
+        <div class="rounded-2xl border border-gray-800 bg-[#161b22] p-6 shadow-lg">
+            <div class="flex items-start justify-between gap-4">
+                <div>
+                    <h3 class="text-sm italic text-red-400">Total Ordenes Canceladas</h3>
+                    <p class="mt-3 text-3xl font-bold text-red-400">{{ getTotalOrdersByStatus('Cancelada') }}</p>
+                </div>
+                <i class="fa-solid fa-ban text-xl text-red-500/70"></i>
+            </div>
+        </div>
+
+        <div class="rounded-2xl border border-gray-800 bg-[#161b22] p-6 shadow-lg">
+            <div class="flex items-start justify-between gap-4">
+                <div>
+                    <h3 class="text-sm italic text-gray-400">Total Unidades Vendidas</h3>
+                    <p class="mt-3 text-3xl font-bold text-gray-400">{{ getTotalUnitsSold() }}</p>
+                </div>
+                <i class="fa-solid fa-box-open text-xl text-gray-500/70"></i>
+            </div>
+        </div>
+
+        <div class="rounded-2xl border border-gray-800 bg-[#161b22] p-6 shadow-lg">
+            <div class="flex items-start justify-between gap-4">
+                <div>
+                    <h3 class="text-sm italic text-green-400">Monto de Ventas</h3>
+                    <p class="mt-3 text-3xl font-bold text-green-400">{{ formatPrice(getTotalSales()) }}</p>
+                </div>
+                <i class="fa-solid fa-chart-line text-xl text-green-500/70"></i>
+            </div>
+        </div>
+    </div>
+</section>

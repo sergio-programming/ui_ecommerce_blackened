@@ -1,0 +1,308 @@
+<section class="mx-auto flex w-full max-w-6xl flex-col gap-6 text-white md:gap-8">
+    <div class="overflow-hidden rounded-3xl border border-gray-800 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.08),transparent_32%),linear-gradient(135deg,rgba(17,24,39,0.98),rgba(0,0,0,1)_58%,rgba(17,24,39,0.96))] shadow-2xl">
+        <div class="grid gap-8 px-5 py-6 sm:px-8 md:px-10 md:py-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-start">
+            <div class="space-y-5">
+                <span class="inline-flex rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.24em] text-gray-300">
+                    Blackened Admin
+                </span>
+
+                <div class="space-y-3">
+                    <h2 class="text-3xl font-semibold [text-shadow:0_0_12px_rgba(255,255,255,0.18)] sm:text-4xl">
+                        {{ productToEdit() ? 'Actualizar Producto' : 'Crear Producto' }}
+                    </h2>
+                    <p class="max-w-xl text-sm leading-6 text-gray-300 sm:text-base">
+                        {{ productToEdit()
+                            ? 'Modifica la informacion del producto, su precio y disponibilidad.'
+                            : 'Agrega un nuevo producto al catalogo de Blackened.' }}
+                    </p>
+                </div>
+
+                <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+                    <div class="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-4 backdrop-blur-sm">
+                        <p class="text-[0.7rem] font-semibold uppercase tracking-[0.24em] text-gray-500">
+                            Estado del formulario
+                        </p>
+                        <p class="mt-2 text-sm text-gray-200">
+                            {{ productToEdit() ? 'Edicion de producto existente' : 'Registro de un nuevo producto' }}
+                        </p>
+                    </div>
+
+                    <div class="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-4 backdrop-blur-sm">
+                        <p class="text-[0.7rem] font-semibold uppercase tracking-[0.24em] text-gray-500">
+                            Inventario
+                        </p>
+                        <p class="mt-2 text-sm text-gray-200">
+                            {{ productForm.get('category')?.value === 'CD' ? 'Control por unidades' : 'Control por tallas' }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="rounded-3xl border border-white/10 bg-black/30 p-4 shadow-xl backdrop-blur-sm sm:p-6">
+                <form
+                    class="grid gap-5"
+                    [formGroup]="productForm"
+                    (ngSubmit)="onSubmit()"
+                >
+                    <div class="grid gap-5 md:grid-cols-2">
+                        <div>
+                            <label
+                                for="productform-code"
+                                class="mb-2 block text-sm font-medium text-gray-200"
+                            >
+                                Codigo del producto
+                            </label>
+                            <input
+                                id="productform-code"
+                                type="text"
+                                formControlName="productCode"
+                                placeholder="Ej: CAM-0001"
+                                class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm uppercase text-white outline-none transition placeholder:normal-case placeholder:text-gray-500 focus:border-white/30 focus:bg-white/[0.07] focus:ring-2 focus:ring-white/20"
+                            >
+                            @if (productForm.get('productCode')?.invalid && productForm.get('productCode')?.touched) {
+                                <div class="mt-2 flex items-start gap-2 rounded-2xl border border-rose-500/20 bg-rose-500/10 px-3 py-2 text-sm text-rose-100">
+                                    <i class="fa-solid fa-triangle-exclamation mt-0.5 text-rose-300"></i>
+                                    <span>El codigo es obligatorio y debe tener el formato ABC-1234.</span>
+                                </div>
+                            }
+                        </div>
+
+                        <div>
+                            <label
+                                for="productform-category"
+                                class="mb-2 block text-sm font-medium text-gray-200"
+                            >
+                                Categoria
+                            </label>
+                            <select
+                                id="productform-category"
+                                formControlName="category"
+                                class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white outline-none transition focus:border-white/30 focus:bg-white/[0.07] focus:ring-2 focus:ring-white/20"
+                            >
+                                <option value="" disabled class="bg-gray-950 text-gray-400">Seleccionar</option>
+                                @for (category of CategoryOptions; track category) {
+                                    <option
+                                        [value]="category"
+                                        class="bg-gray-950 text-white"
+                                    >
+                                        {{ category }}
+                                    </option>
+                                }
+                            </select>
+                            @if (productForm.get('category')?.invalid && productForm.get('category')?.touched) {
+                                <div class="mt-2 flex items-start gap-2 rounded-2xl border border-rose-500/20 bg-rose-500/10 px-3 py-2 text-sm text-rose-100">
+                                    <i class="fa-solid fa-triangle-exclamation mt-0.5 text-rose-300"></i>
+                                    <span>Selecciona una categoria para continuar.</span>
+                                </div>
+                            }
+                        </div>
+
+                        <div class="md:col-span-2">
+                            <label
+                                for="productform-description"
+                                class="mb-2 block text-sm font-medium text-gray-200"
+                            >
+                                Descripcion
+                            </label>
+                            <textarea
+                                id="productform-description"
+                                formControlName="description"
+                                rows="4"
+                                placeholder="Describe el producto, referencia, color o detalles importantes."
+                                class="min-h-28 w-full resize-y rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white outline-none transition placeholder:text-gray-500 focus:border-white/30 focus:bg-white/[0.07] focus:ring-2 focus:ring-white/20"
+                            ></textarea>
+                            @if (productForm.get('description')?.invalid && productForm.get('description')?.touched) {
+                                <div class="mt-2 flex items-start gap-2 rounded-2xl border border-rose-500/20 bg-rose-500/10 px-3 py-2 text-sm text-rose-100">
+                                    <i class="fa-solid fa-triangle-exclamation mt-0.5 text-rose-300"></i>
+                                    <span>La descripcion debe tener entre 10 y 100 caracteres.</span>
+                                </div>
+                            }
+                        </div>
+
+                        <div>
+                            <label
+                                for="productform-price"
+                                class="mb-2 block text-sm font-medium text-gray-200"
+                            >
+                                Precio
+                            </label>
+                            <input
+                                id="productform-price"
+                                type="number"
+                                min="0"
+                                step="100"
+                                formControlName="price"
+                                placeholder="Ej: 65000"
+                                class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white outline-none transition placeholder:text-gray-500 focus:border-white/30 focus:bg-white/[0.07] focus:ring-2 focus:ring-white/20"
+                            >
+                            @if (productForm.get('price')?.invalid && productForm.get('price')?.touched) {
+                                <div class="mt-2 flex items-start gap-2 rounded-2xl border border-rose-500/20 bg-rose-500/10 px-3 py-2 text-sm text-rose-100">
+                                    <i class="fa-solid fa-triangle-exclamation mt-0.5 text-rose-300"></i>
+                                    <span>El precio es obligatorio y no puede ser negativo.</span>
+                                </div>
+                            }
+                        </div>
+
+                        <div>
+                            <label
+                                for="productform-image"
+                                class="mb-2 block text-sm font-medium text-gray-200"
+                            >
+                                Imagen
+                            </label>
+                            <input
+                                id="productform-image"
+                                type="url"
+                                formControlName="image"
+                                placeholder="https://..."
+                                class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white outline-none transition placeholder:text-gray-500 focus:border-white/30 focus:bg-white/[0.07] focus:ring-2 focus:ring-white/20"
+                            >
+                            @if (productForm.get('image')?.invalid && productForm.get('image')?.touched) {
+                                <div class="mt-2 flex items-start gap-2 rounded-2xl border border-rose-500/20 bg-rose-500/10 px-3 py-2 text-sm text-rose-100">
+                                    <i class="fa-solid fa-triangle-exclamation mt-0.5 text-rose-300"></i>
+                                    <span>Agrega la URL de la imagen del producto.</span>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+                        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                            <div>
+                                <h3 class="text-lg font-semibold text-white">
+                                    Inventario
+                                </h3>
+                                <p class="mt-1 text-sm text-gray-400">
+                                    {{ productForm.get('category')?.value === 'CD'
+                                        ? 'Registra el stock disponible para el producto.'
+                                        : 'Agrega el stock disponible por talla.' }}
+                                </p>
+                            </div>
+
+                            <button
+                                type="button"
+                                (click)="addInventoryItem()"
+                                class="inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/10 px-4 py-2.5 text-sm font-semibold text-white transition hover:border-white/20 hover:bg-white/15 focus:outline-none focus:ring-2 focus:ring-white/30 sm:w-auto"
+                            >
+                                <i class="fa-solid fa-plus text-xs"></i>
+                                Agregar fila
+                            </button>
+                        </div>
+
+                        <div
+                            formArrayName="inventory"
+                            class="mt-4 grid gap-3"
+                        >
+                            @for (item of inventoryArray.controls; track $index; let i = $index) {
+                                <div
+                                    class="grid gap-3 rounded-2xl border border-white/10 bg-black/20 p-3 sm:grid-cols-[minmax(0,1fr)_minmax(8rem,0.55fr)_auto] sm:items-start"
+                                    [formGroupName]="i"
+                                >
+                                    <div>
+                                        <label
+                                            [for]="'productform-size-' + i"
+                                            class="mb-2 block text-sm font-medium text-gray-200"
+                                        >
+                                            Talla
+                                        </label>
+                                        <select
+                                            [id]="'productform-size-' + i"
+                                            formControlName="size"
+                                            [disabled]="productForm.get('category')?.value === 'CD'"
+                                            class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white outline-none transition focus:border-white/30 focus:bg-white/[0.07] focus:ring-2 focus:ring-white/20 disabled:cursor-not-allowed disabled:opacity-50"
+                                        >
+                                            <option value="" class="bg-gray-950 text-gray-400">
+                                                {{ productForm.get('category')?.value === 'CD' ? 'No aplica' : 'Seleccionar' }}
+                                            </option>
+                                            @for (size of SizeOptions; track size.value) {
+                                                <option
+                                                    [value]="size.value"
+                                                    class="bg-gray-950 text-white"
+                                                >
+                                                    {{ size.label }}
+                                                </option>
+                                            }
+                                        </select>
+                                    </div>
+
+                                    <div>
+                                        <label
+                                            [for]="'productform-stock-' + i"
+                                            class="mb-2 block text-sm font-medium text-gray-200"
+                                        >
+                                            Stock
+                                        </label>
+                                        <input
+                                            [id]="'productform-stock-' + i"
+                                            type="number"
+                                            min="0"
+                                            formControlName="stock"
+                                            class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white outline-none transition placeholder:text-gray-500 focus:border-white/30 focus:bg-white/[0.07] focus:ring-2 focus:ring-white/20"
+                                        >
+                                        @if (item.get('stock')?.invalid && item.get('stock')?.touched) {
+                                            <div class="mt-2 flex items-start gap-2 rounded-2xl border border-rose-500/20 bg-rose-500/10 px-3 py-2 text-sm text-rose-100">
+                                                <i class="fa-solid fa-triangle-exclamation mt-0.5 text-rose-300"></i>
+                                                <span>Stock invalido.</span>
+                                            </div>
+                                        }
+                                    </div>
+
+                                    <button
+                                        type="button"
+                                        (click)="removeInventoryItem(i)"
+                                        [disabled]="inventoryArray.length === 1"
+                                        class="inline-flex h-12 w-full items-center justify-center gap-2 rounded-2xl border border-rose-500/20 bg-rose-500/10 px-4 text-sm font-semibold text-rose-100 transition hover:border-rose-400/40 hover:bg-rose-500/15 focus:outline-none focus:ring-2 focus:ring-rose-300/30 disabled:cursor-not-allowed disabled:opacity-40 sm:mt-7 sm:w-12 sm:px-0"
+                                        aria-label="Eliminar fila de inventario"
+                                    >
+                                        <i class="fa-solid fa-trash text-xs"></i>
+                                        <span class="sm:hidden">Eliminar</span>
+                                    </button>
+                                </div>
+                            } @empty {
+                                <div class="rounded-2xl border border-dashed border-white/10 px-4 py-6 text-center text-sm text-gray-400">
+                                    No hay filas de inventario registradas.
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    @if (message()) {
+                        <div class="flex items-start gap-3 rounded-2xl border border-amber-500/20 bg-amber-500/10 px-4 py-3 text-sm text-amber-100 shadow-lg backdrop-blur-sm">
+                            <i class="fa-solid fa-circle-info mt-0.5 text-amber-300"></i>
+                            <span>{{ message() }}</span>
+                        </div>
+                    }
+
+                    <div class="flex flex-col gap-3 border-t border-white/10 pt-2 sm:flex-row sm:items-center sm:justify-between">
+                        <button
+                            type="submit"
+                            [disabled]="isLoading()"
+                            class="inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/10 px-5 py-3 text-sm font-semibold text-white shadow-lg backdrop-blur-sm cursor-pointer transition hover:border-white/20 hover:bg-white/15 focus:outline-none focus:ring-2 focus:ring-white/30 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+                        >
+                            <i
+                                class="fa-solid"
+                                [class.fa-floppy-disk]="productToEdit() && !isLoading()"
+                                [class.fa-box-open]="!productToEdit() && !isLoading()"
+                                [class.fa-spinner]="isLoading()"
+                                [class.animate-spin]="isLoading()"
+                            ></i>
+                            {{ isLoading() ? 'Procesando...' : (productToEdit() ? 'Guardar cambios' : 'Crear producto') }}
+                        </button>
+
+                        <div class="flex flex-col items-start gap-1 text-sm text-gray-400 sm:items-end">
+                            <span>{{ productToEdit() ? 'Quieres volver al listado?' : 'Prefieres cancelar el registro?' }}</span>
+                            <button
+                                type="button"
+                                (click)="onCancel()"
+                                class="inline-flex items-center gap-2 font-semibold text-gray-200 transition cursor-pointer hover:text-white"
+                            >
+                                <i class="fa-solid fa-arrow-left text-xs"></i>
+                                Regresar
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

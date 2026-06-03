@@ -1,0 +1,148 @@
+<header class="border-b border-gray-800 bg-black px-4 text-white md:px-8">
+    <div class="flex h-20 items-center justify-between">
+        <a
+            routerLink="/"
+            class="flex items-center gap-3"
+            aria-label="Ir al inicio"
+        >
+            <img
+                src="/logo.jpg"
+                alt="Logo"
+                class="h-10 w-10 rounded-full object-cover"
+            >
+            <span class="hidden text-lg font-semibold sm:block">
+                Blackened Camisetas
+            </span>
+        </a>
+
+        <nav class="hidden items-center gap-6 md:flex">
+            @for (link of links; track link.path) {
+                <a
+                    [routerLink]="link.path"
+                    routerLinkActive="text-white"
+                    [routerLinkActiveOptions]="{ exact: link.path === '/' }"
+                    class="flex items-center gap-2 font-semibold text-gray-300 transition-colors duration-200 hover:text-white"
+                >
+                    <i [class]="link.icon"></i>
+                    <span>{{ link.label }}</span>
+                </a>
+            }
+        </nav>
+
+        <div class="hidden items-center gap-3 md:flex">
+            @if (currentUser; as user) {
+                @if(user.role === 'user') {
+                    <button
+                        type="button"
+                        (click)="onShoppingCartButton()"
+                        class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-gray-700 text-gray-300 transition-colors duration-200 hover:border-white hover:text-white"
+                        aria-label="Carrito de compras"
+                    >
+                        <i class="fa-solid fa-cart-shopping"></i>
+                    </button>
+                }
+
+                    <button
+                        type="button"
+                        (click)="onLogout()"
+                        class="flex h-10 cursor-pointer items-center justify-center gap-2 rounded-full border border-gray-700 px-4 text-sm font-semibold text-gray-300 transition-colors duration-200 hover:border-white hover:text-white"
+                        aria-label="Cerrar sesion"
+                    >
+                        <i class="fa-solid fa-power-off"></i>
+                        <span>Salir</span>
+                    </button>
+            } @else {
+                <button
+                    type="button"
+                    (click)="onShoppingCartButton()"
+                    class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-gray-700 text-gray-300 transition-colors duration-200 hover:border-white hover:text-white"
+                    aria-label="Carrito de compras"
+                >
+                    <i class="fa-solid fa-cart-shopping"></i>
+                </button>
+
+                    <button
+                        type="button"
+                        (click)="onGoToLogin()"
+                    class="flex h-10 cursor-pointer items-center justify-center gap-2 rounded-full border border-gray-700 px-4 text-sm font-semibold text-gray-300 transition-colors duration-200 hover:border-white hover:text-white"
+                    aria-label="Iniciar sesion"
+                >
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                    <span>Ingresar</span>
+                </button>
+            }
+        </div>
+
+        <button
+            type="button"
+            class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-gray-700 text-xl text-gray-300 transition-colors duration-200 hover:border-white hover:text-white md:hidden"
+            aria-label="Abrir menu"
+            (click)="toggleMobileMenu()"
+        >
+            <i [class]="mobileMenuOpen ? 'fa-solid fa-xmark' : 'fa-solid fa-bars'"></i>
+        </button>
+    </div>
+
+    @if (mobileMenuOpen) {
+        <div class="border-t border-gray-800 py-4 md:hidden">
+            <nav class="flex flex-col gap-2">
+                @for (link of links; track link.path) {
+                    <a
+                        [routerLink]="link.path"
+                        routerLinkActive="text-white border-gray-600 bg-gray-900"
+                        [routerLinkActiveOptions]="{ exact: link.path === '/' }"
+                        class="flex items-center gap-3 rounded-lg border border-transparent px-3 py-3 font-semibold text-gray-300 transition-colors duration-200 hover:border-gray-700 hover:bg-gray-900 hover:text-white"
+                        (click)="closeMobileMenu()"
+                    >
+                        <i [class]="link.icon"></i>
+                        <span>{{ link.label }}</span>
+                    </a>
+                }
+            </nav>
+
+            <div class="mt-4 flex items-center gap-3">
+                @if (currentUser; as user) {
+                    @if(user.role === 'user') {
+                        <button
+                            type="button"
+                            (click)="onShoppingCartButton()"
+                            class="flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-gray-700 text-gray-300 transition-colors duration-200 hover:border-white hover:text-white"
+                            aria-label="Carrito de compras"
+                        >
+                            <i class="fa-solid fa-cart-shopping"></i>
+                        </button>
+                    }
+
+                    <button
+                        type="button"
+                        (click)="onLogout()"
+                        class="flex h-11 flex-1 cursor-pointer items-center justify-center gap-2 rounded-full border border-gray-700 px-4 text-sm font-semibold text-gray-300 transition-colors duration-200 hover:border-white hover:text-white"
+                        aria-label="Cerrar sesion"
+                    >
+                        <i class="fa-solid fa-power-off"></i>
+                        <span>Salir</span>
+                    </button>
+                } @else {
+                    <button
+                        type="button"
+                        (click)="onShoppingCartButton()"
+                        class="flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-gray-700 text-gray-300 transition-colors duration-200 hover:border-white hover:text-white"
+                        aria-label="Carrito de compras"
+                    >
+                        <i class="fa-solid fa-cart-shopping"></i>
+                    </button>
+
+                    <button
+                        type="button"
+                        (click)="onGoToLogin()"
+                        class="flex h-11 flex-1 cursor-pointer items-center justify-center gap-2 rounded-full border border-gray-700 px-4 text-sm font-semibold text-gray-300 transition-colors duration-200 hover:border-white hover:text-white"
+                        aria-label="Iniciar sesion"
+                    >
+                        <i class="fa-solid fa-right-to-bracket"></i>
+                        <span>Ingresar</span>
+                    </button>
+                }
+            </div>
+        </div>
+    }
+</header>

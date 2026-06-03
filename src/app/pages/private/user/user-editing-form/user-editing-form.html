@@ -1,0 +1,155 @@
+<section class="overflow-hidden rounded-3xl border border-gray-800 bg-[linear-gradient(180deg,rgba(17,24,39,0.92),rgba(0,0,0,0.98))] text-white shadow-2xl">
+    <div class="border-b border-white/10 px-5 py-6 sm:px-6 md:px-8">
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+                <span class="inline-flex rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.24em] text-gray-400">
+                    Perfil
+                </span>
+                <h2 class="mt-3 text-2xl font-semibold sm:text-3xl">
+                    Edicion de cuenta
+                </h2>
+                <p class="mt-2 max-w-2xl text-sm leading-6 text-gray-300 sm:text-base">
+                    Actualiza la información principal de tu perfil y cambia tu contrasena cuando lo necesites.
+                </p>
+            </div>
+
+            <div class="hidden h-14 w-14 items-center justify-center rounded-full border border-white/10 bg-white/5 text-xl text-gray-200 shadow-lg sm:flex">
+                <i class="fa-solid fa-user-pen"></i>
+            </div>
+        </div>
+    </div>
+
+    @if (isLoading()) {
+        <div class="flex min-h-72 items-center justify-center px-5 py-10 text-center text-gray-300 sm:px-6 md:px-8">
+            <div class="flex flex-col items-center gap-3">
+                <i class="fa-solid fa-spinner animate-spin text-2xl text-gray-200"></i>
+                <p class="text-sm sm:text-base">Cargando información de tu cuenta...</p>
+            </div>
+        </div>
+    } @else {
+        <div class="px-5 py-6 sm:px-6 md:px-8">
+            <form
+                class="grid gap-6"
+                [formGroup]="userEditingForm"
+                (ngSubmit)="onSubmit()"
+            >
+                <div class="grid gap-5 md:grid-cols-2">
+                    <div class="md:col-span-2">
+                        <label
+                            for="usereditingform-name"
+                            class="mb-2 block text-sm font-medium text-gray-200"
+                        >
+                            Nombre completo
+                        </label>
+                        <input
+                            id="usereditingform-name"
+                            type="text"
+                            formControlName="fullName"
+                            placeholder="Ej: Juan Perez"
+                            class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white outline-none transition placeholder:text-gray-500 focus:border-white/30 focus:bg-white/[0.07] focus:ring-2 focus:ring-white/20"
+                        >
+                        @if (userEditingForm.get('fullName')?.invalid && userEditingForm.get('fullName')?.touched) {
+                            <div class="mt-2 flex items-start gap-2 rounded-2xl border border-rose-500/20 bg-rose-500/10 px-3 py-2 text-sm text-rose-100">
+                                <i class="fa-solid fa-triangle-exclamation mt-0.5 text-rose-300"></i>
+                                <span>El nombre debe tener al menos 3 caracteres.</span>
+                            </div>
+                        }
+                    </div>
+
+                    <div class="md:col-span-2">
+                        <label
+                            for="usereditingform-email"
+                            class="mb-2 block text-sm font-medium text-gray-200"
+                        >
+                            Correo electronico
+                        </label>
+                        <input
+                            id="usereditingform-email"
+                            type="email"
+                            formControlName="email"
+                            placeholder="tuemail@gmail.com"
+                            class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white outline-none transition placeholder:text-gray-500 focus:border-white/30 focus:bg-white/[0.07] focus:ring-2 focus:ring-white/20"
+                        >
+                        @if (userEditingForm.get('email')?.invalid && userEditingForm.get('email')?.touched) {
+                            <div class="mt-2 flex items-start gap-2 rounded-2xl border border-rose-500/20 bg-rose-500/10 px-3 py-2 text-sm text-rose-100">
+                                <i class="fa-solid fa-triangle-exclamation mt-0.5 text-rose-300"></i>
+                                <span>El email debe tener un formato valido.</span>
+                            </div>
+                        }
+                    </div>
+
+                    <div>
+                        <label
+                            for="usereditingform-password"
+                            class="mb-2 block text-sm font-medium text-gray-200"
+                        >
+                            Nueva contraseña
+                        </label>
+                        <input
+                            id="usereditingform-password"
+                            type="password"
+                            formControlName="password"
+                            placeholder="********"
+                            class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white outline-none transition placeholder:text-gray-500 focus:border-white/30 focus:bg-white/[0.07] focus:ring-2 focus:ring-white/20"
+                        >
+                        @if (userEditingForm.get('password')?.invalid && userEditingForm.get('password')?.touched) {
+                            <div class="mt-2 flex items-start gap-2 rounded-2xl border border-rose-500/20 bg-rose-500/10 px-3 py-2 text-sm text-rose-100">
+                                <i class="fa-solid fa-triangle-exclamation mt-0.5 text-rose-300"></i>
+                                <span>La contrasena debe tener al menos 8 caracteres.</span>
+                            </div>
+                        }
+                    </div>
+
+                    <div>
+                        <label
+                            for="usereditingform-confirm-password"
+                            class="mb-2 block text-sm font-medium text-gray-200"
+                        >
+                            Confirmar contraseña
+                        </label>
+                        <input
+                            id="usereditingform-confirm-password"
+                            type="password"
+                            formControlName="confirmPassword"
+                            placeholder="********"
+                            class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white outline-none transition placeholder:text-gray-500 focus:border-white/30 focus:bg-white/[0.07] focus:ring-2 focus:ring-white/20"
+                        >
+                        @if (userEditingForm.get('confirmPassword')?.touched && userEditingForm.get('password')?.value !== userEditingForm.get('confirmPassword')?.value) {
+                            <div class="mt-2 flex items-start gap-2 rounded-2xl border border-rose-500/20 bg-rose-500/10 px-3 py-2 text-sm text-rose-100">
+                                <i class="fa-solid fa-triangle-exclamation mt-0.5 text-rose-300"></i>
+                                <span>Las contrasenas deben coincidir y tener la longitud mínima.</span>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                @if (message()) {
+                    <div class="flex items-start gap-3 rounded-2xl border border-amber-500/20 bg-amber-500/10 px-4 py-3 text-sm text-amber-100 shadow-lg backdrop-blur-sm">
+                        <i class="fa-solid fa-circle-info mt-0.5 text-amber-300"></i>
+                        <span>{{ message() }}</span>
+                    </div>
+                }
+
+                <div class="flex flex-col gap-3 border-t border-white/10 pt-5 sm:flex-row sm:items-center sm:justify-between">
+                    <button
+                        type="submit"
+                        [disabled]="isLoading()"
+                        class="inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white px-5 py-3 text-sm font-semibold text-black shadow-lg transition-colors duration-200 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-white/50 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+                    >
+                        <i
+                            class="fa-solid"
+                            [class.fa-floppy-disk]="!isLoading()"
+                            [class.fa-spinner]="isLoading()"
+                            [class.animate-spin]="isLoading()"
+                        ></i>
+                        {{ isLoading() ? 'Guardando...' : 'Guardar cambios' }}
+                    </button>
+
+                    <p class="text-sm leading-6 text-gray-400 sm:max-w-sm sm:text-right">
+                        Deja los campos de contrasena vacios si no quieres cambiarla.
+                    </p>
+                </div>
+            </form>
+        </div>
+    }
+</section>

@@ -9,16 +9,16 @@ export const userGuard: CanActivateFn = () => {
   const currentUser = authServices.getCurrentUser();
 
   if (!authServices.isLoggedIn() || !currentUser) {
-    return router.navigate(['/auth/login']);
+    return router.createUrlTree(['/auth/login']);
   }
 
   if (currentUser.role === 'admin') {
-    return router.navigate(['/admin/dashboard']);
+    return router.createUrlTree(['/admin/dashboard']);
   }
 
   if (currentUser.role === 'staff') {
-    return router.navigate(['/staff/dashboard']);
+    return router.createUrlTree(['/staff/dashboard']);
   }
 
-  return true;
+  return currentUser.role === 'user' ? true : router.createUrlTree(['/auth/login']);
 };

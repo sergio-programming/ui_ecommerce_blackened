@@ -153,6 +153,29 @@ export class ProductDetail implements OnInit {
     return item;
   }
 
+  private validateQuantityAgainstStock(): boolean {
+    const availableStock = this.availableStock ?? 0;
+    const quantity = Number(this.productDetailForm.controls.quantity.value);
+
+    if (!Number.isInteger(quantity) || quantity < 1) {
+      this.message.set('La cantidad debe ser un numero entero mayor a cero');
+      return false;
+    }
+
+    if (availableStock < 1) {
+      this.message.set('Producto sin stock disponible');
+      return false;
+    }
+
+    if (quantity > availableStock) {
+      this.productDetailForm.controls.quantity.setValue(availableStock);
+      this.message.set('La cantidad supera el stock disponible');
+      return false;
+    }
+
+    return true;
+  }
+
   private getCartProductId(product: Product | string): string {
     return typeof product === 'string' ? product : product._id;
   }
@@ -199,6 +222,10 @@ export class ProductDetail implements OnInit {
       return;
     }
 
+    if (!this.validateQuantityAgainstStock()) {
+      return;
+    }
+
     this.isLoading.set(true);
 
     try {
@@ -213,7 +240,6 @@ export class ProductDetail implements OnInit {
         this.userCartExists.set(response.cart);
       } else {
         const createdData: CartCreate = {
-          user: user.id,
           items: [item]
         };
         const response = await this.cartServices.createCart(createdData);

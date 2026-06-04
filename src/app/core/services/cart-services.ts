@@ -2,13 +2,14 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Cart, CartCreate, CartItemUpdate, CartResponse, CartUpdate } from '../../features/cart/cart.model';
 import { firstValueFrom } from 'rxjs';
+import { API_BASE_URL } from '../config/api.config';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CartServices {
 
-  private apiUrl = 'http://localhost:3000/api/carts';
+  private readonly apiUrl = `${API_BASE_URL}/carts`;
 
   private readonly http = inject(HttpClient);
 

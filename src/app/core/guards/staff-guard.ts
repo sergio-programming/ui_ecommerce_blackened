@@ -9,16 +9,16 @@ export const staffGuard: CanActivateFn = () => {
   const currentUser = authServices.getCurrentUser();
 
   if (!authServices.isLoggedIn() || !currentUser) {
-    return router.navigate(['/auth/login']);
+    return router.createUrlTree(['/auth/login']);
   }
 
   if (currentUser.role === 'admin') {
-    return router.navigate(['/admin/dashboard']);
+    return router.createUrlTree(['/admin/dashboard']);
   }
 
   if (currentUser.role === 'user') {
-    return router.navigate(['/user/mi-cuenta']);
+    return router.createUrlTree(['/user/mi-cuenta']);
   }
 
-  return true;
+  return currentUser.role === 'staff' ? true : router.createUrlTree(['/auth/login']);
 };

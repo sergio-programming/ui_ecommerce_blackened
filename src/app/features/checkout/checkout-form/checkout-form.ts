@@ -92,12 +92,11 @@ export class CheckoutForm implements OnInit {
       return;
     }
 
-    const userId = this.userInfo()?._id;
     const cartItems = this.cartItems();
     const formData = this.checkoutForm.getRawValue();
     const paymentMethod = formData.paymentMethod as PaymentMethod;
 
-    if (!userId) {
+    if (!this.userInfo()?._id) {
       this.message.set('No se pudo identificar el usuario para crear la orden');
       return;
     }
@@ -119,15 +118,14 @@ export class CheckoutForm implements OnInit {
         }
 
         const createdData: OrderCreate = {
-          user: userId,
           items: cartItems.map((item) => ({
             product: item.product._id,
             size: item.size,
             quantity: item.quantity,
           })),
-          shippingAddress: formData.shippingAddress,
-          city: formData.city,
-          phoneNumber: formData.phoneNumber,
+          shippingAddress: formData.shippingAddress.trim(),
+          city: formData.city.trim(),
+          phoneNumber: formData.phoneNumber.trim(),
           shippingMethod: formData.shippingMethod as ShippingMethod,
           paymentMethod,
         };
@@ -155,7 +153,7 @@ export class CheckoutForm implements OnInit {
         this.isLoading.set(false);
       }      
     } else {
-
+      this.message.set('El pago con Stripe aun no esta disponible');
     }
   }
 

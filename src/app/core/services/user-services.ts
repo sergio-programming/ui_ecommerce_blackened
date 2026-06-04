@@ -2,13 +2,14 @@ import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { User, UserCreate, UserDocumentNumberUpdate, UserEditInfo, UserResponse, UserUpdate } from '../../features/user/user.model';
 import { firstValueFrom } from 'rxjs';
+import { API_BASE_URL } from '../config/api.config';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserServices {
 
-  private apiUrl = 'http://localhost:3000/api/users';
+  private readonly apiUrl = `${API_BASE_URL}/users`;
 
   private readonly http = inject(HttpClient);
 
@@ -28,7 +29,7 @@ export class UserServices {
 
   async getUsersByRole(role: string): Promise<User[]> {
     return firstValueFrom(
-      this.http.get<User[]>(`${this.apiUrl}/role/${role}`)
+      this.http.get<User[]>(`${this.apiUrl}/role/${encodeURIComponent(role)}`)
     );
   }
 

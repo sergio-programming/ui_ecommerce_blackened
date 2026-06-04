@@ -15,16 +15,16 @@ export interface User {
 export interface UserCreate {
     fullName: string;
     email: string;
-    password: string;
-    role: string;
-    documentNumber: string;
+    password?: string;
+    role: UserRoles;
+    documentNumber?: string;
 }
 
 export interface UserUpdate {
-    fullName: string;
-    email: string;
-    role: string;
-    documentNumber: string;
+    fullName?: string;
+    email?: string;
+    role?: UserRoles;
+    documentNumber?: string;
 }
 
 export interface UserDocumentNumberUpdate {
@@ -52,5 +52,5 @@ export interface UserResponse {
 export interface UserSession {
     id: string;
     email: string;
-    role: string;
+    role: UserRoles;
 }

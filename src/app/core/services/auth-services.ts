@@ -4,8 +4,10 @@ import { LocalStorageServices } from './local-storage-services';
 import { UserRegister, UserResponse, UserSession } from '../../features/user/user.model';
 import { LoginPayload, LoginResponse, AuthSession } from '../../features/auth/auth.model';
 import { firstValueFrom, Observable, tap } from 'rxjs';
+import { API_BASE_URL } from '../config/api.config';
 
 const AUTH_STORAGE_KEY = 'blackened-app-auth';
+const VALID_ROLES = ['admin', 'staff', 'user'];
 
 export interface RefreshAccessTokenResponse {
   accessToken: string;
@@ -16,7 +18,7 @@ export interface RefreshAccessTokenResponse {
 })
 export class AuthServices {
 
-  private apiUrl = 'http://localhost:3000/api/auth';
+  private readonly apiUrl = `${API_BASE_URL}/auth`;
 
   private readonly http = inject(HttpClient);
   private readonly storage = inject(LocalStorageServices);
@@ -60,11 +62,13 @@ export class AuthServices {
   }
 
   async logout(): Promise<void> {
-    await firstValueFrom(
-      this.http.post<void>(`${this.apiUrl}/logout`, {}, { withCredentials: true })
-    );
-    this.clearSession();
-    // this.router.navigate(['/login']);
+    try {
+      await firstValueFrom(
+        this.http.post<void>(`${this.apiUrl}/logout`, {}, { withCredentials: true })
+      );
+    } finally {
+      this.clearSession();
+    }
   }
 
   refreshAccessToken(): Observable<RefreshAccessTokenResponse> {
@@ -88,7 +92,7 @@ export class AuthServices {
 
   async signup(data: UserRegister): Promise<UserResponse> {
     return await firstValueFrom(
-      this.http.post<UserResponse>(`${this.apiUrl}/register`, data)
+      this.http.post<UserResponse>(`${this.apiUrl}/register`, data, { withCredentials: true })
     );
   }
 
@@ -108,7 +112,12 @@ export class AuthServices {
       return null;
     }
 
-    if (stored?.accessToken && stored?.user?.id && stored?.user?.email) {
+    if (
+      stored?.accessToken &&
+      stored?.user?.id &&
+      stored?.user?.email &&
+      VALID_ROLES.includes(stored.user.role)
+    ) {
       return stored;
     }
 

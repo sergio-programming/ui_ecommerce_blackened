@@ -30,7 +30,7 @@ export class UserForm implements OnInit {
   readonly userForm = this.fb.nonNullable.group({
     fullName: ['', [Validators.required, Validators.minLength(3)]],
     email: ['', [Validators.required, Validators.email]],
-    documentNumber: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(10)]],
+    documentNumber: ['', [Validators.required, Validators.pattern(/^\d{6,10}$/)]],
     password: ['', [Validators.required, Validators.minLength(8)]],
     role: ['', [Validators.required]]
   });
@@ -72,14 +72,27 @@ export class UserForm implements OnInit {
     }
 
     this.isLoading.set(true);
+    this.message.set(null);
     try {
       if (this.userToEdit()) {
         const { password, ...data } = this.userForm.getRawValue();
-        const updatedData: UserUpdate = data;
+        const updatedData: UserUpdate = {
+          fullName: data.fullName.trim(),
+          email: data.email.trim().toLowerCase(),
+          documentNumber: data.documentNumber.trim(),
+          role: data.role as UserUpdate['role']
+        };
         const response = await this.userServices.updateUser(this.userToEdit()!._id, updatedData);
         this.message.set(response.message);
       } else {
-        const createdData = this.userForm.getRawValue() as UserCreate;
+        const rawData = this.userForm.getRawValue();
+        const createdData: UserCreate = {
+          fullName: rawData.fullName.trim(),
+          email: rawData.email.trim().toLowerCase(),
+          documentNumber: rawData.documentNumber.trim(),
+          password: rawData.password.trim(),
+          role: rawData.role as UserCreate['role']
+        };
         const response = await this.userServices.createUser(createdData);
         this.message.set(response.message);
       }
@@ -88,7 +101,9 @@ export class UserForm implements OnInit {
       console.error('Ocurrio un error: ', error);
       this.message.set(error.error?.message || 'Error de conexión al servidor');
     } finally {
-      this.userForm.reset();
+      if (!this.userToEdit()) {
+        this.userForm.reset();
+      }
       this.isLoading.set(false);
     }
   }

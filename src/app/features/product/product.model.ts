@@ -26,7 +26,7 @@ export interface ProductCreate {
     inventory: ProductInventory[];
 }
 
-export interface ProductUpdate extends ProductCreate {};
+export type ProductUpdate = Partial<ProductCreate>;
 
 export interface ProductResponse {
     message: string;

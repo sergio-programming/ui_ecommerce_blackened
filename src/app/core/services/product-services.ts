@@ -2,13 +2,14 @@ import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Product, ProductCreate, ProductResponse, ProductUpdate } from '../../features/product/product.model';
 import { firstValueFrom } from 'rxjs';
+import { API_BASE_URL } from '../config/api.config';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductServices {
 
-  private apiUrl = 'http://localhost:3000/api/products';
+  private readonly apiUrl = `${API_BASE_URL}/products`;
   
   private readonly http = inject(HttpClient);
 
@@ -30,13 +31,13 @@ export class ProductServices {
 
   async getProductsByCategory(category: string): Promise<Product[]> {
     return await firstValueFrom(
-      this.http.get<Product[]>(`${this.apiUrl}/category/${category}`)
+      this.http.get<Product[]>(`${this.apiUrl}/category/${encodeURIComponent(category)}`)
     );
   }
 
   async getProductByCode(productCode: string): Promise<Product> {
     return await firstValueFrom(
-      this.http.get<Product>(`${this.apiUrl}/code/${productCode}`)
+      this.http.get<Product>(`${this.apiUrl}/code/${encodeURIComponent(productCode)}`)
     );
   }
 

@@ -38,7 +38,7 @@ export class ShoppingCartList implements OnInit {
     this.message.set('');
 
     try {
-      const user = await this.userServices.getUserProfile();
+      await this.userServices.getUserProfile();
       const cartData = await this.cartServices.getCartByUser();
       this.cart.set(cartData);
       this.cartItems.set(cartData.items);
@@ -93,7 +93,7 @@ export class ShoppingCartList implements OnInit {
   }
 
   async onUpdateCartItemQuantity(_id: string, item: CartItem, quantity: number): Promise<void> {
-    if (quantity < 1 || this.updatingItemId()) {
+    if (!Number.isInteger(quantity) || quantity < 1 || this.updatingItemId()) {
       return;
     }
 

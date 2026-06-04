@@ -25,7 +25,6 @@ export interface CartItemCreate {
 }
 
 export interface CartCreate {
-    user: string;
     items: CartItemCreate[];
 }
 

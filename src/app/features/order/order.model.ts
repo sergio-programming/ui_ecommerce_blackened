@@ -9,7 +9,7 @@ export type PaymentMethod = 'Contraentrega' | 'Stripe';
 export interface OrderItem {
     _id: string;
     product: Product;
-    size: string;
+    size?: string;
     quantity: number;
     priceAtMoment: number;
 }
@@ -35,7 +35,6 @@ export interface OrderCreateItem {
 }
 
 export interface OrderCreate {
-    user: string;
     items: OrderCreateItem[];
     shippingAddress: string;
     city: string;
@@ -45,7 +44,6 @@ export interface OrderCreate {
 }
 
 export interface OrderUpdate {
-    items?: OrderCreateItem[];
     shippingAddress?: string;
     city?: string;
     phoneNumber?: string,

@@ -2,13 +2,14 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { Checkout, CheckoutCreate, CheckoutResponse, CheckoutUpdate } from '../../features/checkout/checkout.model';
+import { API_BASE_URL } from '../config/api.config';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CheckoutServices {
 
-  private apiUrl = 'http://localhost:3000/api/checkouts';
+  private readonly apiUrl = `${API_BASE_URL}/checkouts`;
 
   private readonly http = inject(HttpClient);
 

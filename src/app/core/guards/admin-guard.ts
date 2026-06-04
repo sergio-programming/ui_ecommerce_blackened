@@ -9,16 +9,16 @@ export const adminGuard: CanActivateFn = () => {
   const currentUser = authServices.getCurrentUser();
 
   if (!authServices.isLoggedIn() || !currentUser) {
-    return router.navigate(['/auth/login']);
+    return router.createUrlTree(['/auth/login']);
   }
 
   if (currentUser.role === 'staff') {
-    return router.navigate(['/staff/dashboard']);
+    return router.createUrlTree(['/staff/dashboard']);
   }
 
   if (currentUser.role === 'user') {
-    return router.navigate(['/user/mi-cuenta']);
+    return router.createUrlTree(['/user/mi-cuenta']);
   }
 
-  return true;
+  return currentUser.role === 'admin' ? true : router.createUrlTree(['/auth/login']);
 };

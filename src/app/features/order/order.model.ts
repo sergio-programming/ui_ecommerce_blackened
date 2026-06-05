@@ -57,3 +57,8 @@ export interface OrderResponse {
     message: string;
     order: Order;
 }
+
+export interface UserAddress {
+  shippingAddress: string;
+  city: string;
+}

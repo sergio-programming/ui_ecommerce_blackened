@@ -34,7 +34,7 @@ export class HeaderComponent {
       return [
         { label: 'Dashboard', path: '/staff/dashboard', icon: 'fa-solid fa-chart-line' },
         { label: 'Productos', path: '/staff/productos', icon: 'fa-solid fa-box-open' },
-        { label: 'Ordenes', path: '/admin/ordenes', icon: 'fa-solid fa-receipt' }
+        { label: 'Ordenes', path: '/staff/ordenes', icon: 'fa-solid fa-receipt' }
       ]
     }
 
@@ -72,7 +72,7 @@ export class HeaderComponent {
     try {
       await this.authServices.logout();
       this.closeMobileMenu();
-      this.router.navigate(['/auth/login']);
+      this.router.navigate(['/auth/login'], { replaceUrl: true });
     } catch (error) {
       console.error('Error al cerrar sesión: ', error);
     }

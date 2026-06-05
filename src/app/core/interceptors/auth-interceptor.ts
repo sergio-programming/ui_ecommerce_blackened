@@ -56,7 +56,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
         }),
         catchError((refreshError) => {
           authServices.clearSession();
-          router.navigate(['/auth/login']);
+          router.navigate(['/auth/login'], { replaceUrl: true });
           return throwError(() => refreshError);
         })
       );

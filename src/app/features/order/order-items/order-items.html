@@ -1,0 +1,201 @@
+<section class="flex flex-col gap-6 text-white md:gap-8">
+    <div class="overflow-hidden rounded-3xl border border-gray-800 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.08),transparent_32%),linear-gradient(135deg,rgba(17,24,39,0.98),rgba(0,0,0,1)_58%,rgba(17,24,39,0.96))] shadow-2xl">
+        <div class="flex flex-col gap-5 px-5 py-6 sm:px-8 md:px-10 md:py-8 lg:flex-row lg:items-center lg:justify-between">
+            <div class="min-w-0 space-y-2">
+                <span class="inline-flex rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.24em] text-gray-300">
+                    Blackened Admin
+                </span>
+                <div class="space-y-1">
+                    <h1 class="break-words text-3xl font-semibold [text-shadow:0_0_12px_rgba(255,255,255,0.18)] sm:text-4xl">
+                        Productos de la orden
+                    </h1>
+                    <p class="max-w-2xl text-sm leading-6 text-gray-300 sm:text-base">
+                        Revisa los articulos asociados a esta orden, cantidades, precios unitarios y subtotales.
+                    </p>
+                </div>
+            </div>
+
+            <div class="flex flex-col gap-3 sm:flex-row lg:items-center">
+                <div class="inline-flex items-center justify-center gap-3 rounded-2xl border border-white/10 bg-white/10 px-5 py-3 text-sm font-semibold text-white shadow-lg backdrop-blur-sm max-lg:w-full">
+                    <i class="fa-solid fa-box-open text-sm"></i>
+                    <span>{{ orderItems().length }} {{ orderItems().length === 1 ? 'producto' : 'productos' }}</span>
+                </div>
+
+                <button
+                    type="button"
+                    (click)="onGoToOrderList()"
+                    class="inline-flex items-center justify-center gap-2 rounded-full border border-white/10 bg-white px-5 py-3 text-sm font-semibold text-black shadow-lg cursor-pointer transition-colors duration-200 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-white/50 max-lg:w-full"
+                >
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span>Regresar</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    @if (message()) {
+        <div class="flex items-start gap-3 rounded-2xl border border-amber-300 bg-amber-100 px-4 py-3 text-sm font-medium shadow-lg">
+            <i class="fa-solid fa-circle-info mt-0.5 text-amber-700"></i>
+            <span class="text-gray-900">{{ message() }}</span>
+        </div>
+    }
+
+    @if (isLoading()) {
+        <div class="flex min-h-64 items-center justify-center rounded-3xl border border-gray-800 bg-[linear-gradient(180deg,rgba(17,24,39,0.92),rgba(0,0,0,0.98))] px-6 text-center shadow-xl">
+            <div class="space-y-3">
+                <div class="mx-auto h-11 w-11 animate-spin rounded-full border-2 border-white/15 border-t-white"></div>
+                <p class="text-sm uppercase tracking-[0.28em] text-gray-300">
+                    Cargando productos...
+                </p>
+            </div>
+        </div>
+    } @else if (orderItems().length > 0) {
+        <div class="hidden overflow-hidden rounded-3xl border border-gray-800 bg-[linear-gradient(180deg,rgba(17,24,39,0.92),rgba(0,0,0,0.98))] shadow-2xl lg:block">
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-800">
+                    <thead class="bg-white/[0.03]">
+                        <tr class="text-left text-xs font-semibold uppercase tracking-[0.24em] text-gray-400">
+                            <th class="px-6 py-4">#</th>
+                            <th class="px-6 py-4">Producto</th>
+                            <th class="px-6 py-4">Talla</th>
+                            <th class="px-6 py-4 text-center">Cantidad</th>
+                            <th class="px-6 py-4 text-right">Precio</th>
+                            <th class="px-6 py-4 text-right">Subtotal</th>
+                        </tr>
+                    </thead>
+
+                    <tbody class="divide-y divide-gray-800/80">
+                        @for (item of orderItems(); track item._id; let i = $index) {
+                            <tr class="transition hover:bg-white/[0.03]">
+                                <td class="px-6 py-5 text-sm text-gray-400">
+                                    {{ i + 1 }}
+                                </td>
+                                <td class="px-6 py-5">
+                                    <div class="flex min-w-0 items-center gap-4">
+                                        @if (item.product.image) {
+                                            <img
+                                                [src]="item.product.image"
+                                                [alt]="item.product.description"
+                                                class="h-14 w-14 shrink-0 rounded-2xl border border-white/10 object-cover shadow-lg"
+                                            >
+                                        } @else {
+                                            <div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-black/40 text-gray-300 shadow-lg">
+                                                <i class="fa-solid fa-shirt"></i>
+                                            </div>
+                                        }
+
+                                        <div class="min-w-0">
+                                            <p class="break-words text-sm font-semibold text-white">
+                                                {{ item.product.description }}
+                                            </p>
+                                            <p class="mt-1 text-xs font-semibold uppercase tracking-[0.18em] text-gray-500">
+                                                {{ item.product.productCode }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-5">
+                                    @if (item.size) {
+                                        <span class="inline-flex rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-gray-200">
+                                            {{ item.size }}
+                                        </span>
+                                    } @else {
+                                        <span class="text-sm text-gray-500">No aplica</span>
+                                    }
+                                </td>
+                                <td class="px-6 py-5 text-center">
+                                    <span class="inline-flex min-w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 px-3 py-1 text-sm font-semibold text-white">
+                                        {{ item.quantity }}
+                                    </span>
+                                </td>
+                                <td class="px-6 py-5 text-right text-sm font-semibold text-white">
+                                    {{ formatPrice(item.priceAtMoment) }}
+                                </td>
+                                <td class="px-6 py-5 text-right text-sm font-semibold text-white">
+                                    {{ formatPrice(calculateSubtotal(item)) }}
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="grid gap-4 lg:hidden">
+            @for (item of orderItems(); track item._id; let i = $index) {
+                <article class="overflow-hidden rounded-2xl border border-gray-800 bg-[linear-gradient(180deg,rgba(17,24,39,0.92),rgba(0,0,0,0.98))] p-4 shadow-xl">
+                    <div class="flex gap-4">
+                        @if (item.product.image) {
+                            <img
+                                [src]="item.product.image"
+                                [alt]="item.product.description"
+                                class="h-20 w-20 shrink-0 rounded-2xl border border-white/10 object-cover shadow-lg"
+                            >
+                        } @else {
+                            <div class="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-black/40 text-xl text-gray-300 shadow-lg">
+                                <i class="fa-solid fa-shirt"></i>
+                            </div>
+                        }
+
+                        <div class="min-w-0 flex-1">
+                            <p class="text-xs font-semibold uppercase tracking-[0.24em] text-gray-500">
+                                Producto {{ i + 1 }}
+                            </p>
+                            <h2 class="mt-1 break-words text-base font-semibold text-white">
+                                {{ item.product.description }}
+                            </h2>
+                            <p class="mt-1 text-xs font-semibold uppercase tracking-[0.18em] text-gray-400">
+                                {{ item.product.productCode }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 flex flex-wrap gap-2">
+                        @if (item.size) {
+                            <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-gray-200">
+                                Talla {{ item.size }}
+                            </span>
+                        }
+                        <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-gray-200">
+                            Cantidad {{ item.quantity }}
+                        </span>
+                    </div>
+
+                    <div class="mt-4 grid gap-3 sm:grid-cols-2">
+                        <div class="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+                            <p class="text-xs uppercase tracking-[0.2em] text-gray-500">
+                                Precio
+                            </p>
+                            <p class="mt-1 text-sm font-semibold text-white">
+                                {{ formatPrice(item.priceAtMoment) }}
+                            </p>
+                        </div>
+
+                        <div class="rounded-2xl border border-white/10 bg-white px-4 py-3 text-black">
+                            <p class="text-xs font-semibold uppercase tracking-[0.2em] text-gray-500">
+                                Subtotal
+                            </p>
+                            <p class="mt-1 text-lg font-semibold">
+                                {{ formatPrice(calculateSubtotal(item)) }}
+                            </p>
+                        </div>
+                    </div>
+                </article>
+            }
+        </div>
+    } @else {
+        <div class="flex min-h-72 items-center justify-center rounded-3xl border border-gray-800 bg-[linear-gradient(180deg,rgba(17,24,39,0.92),rgba(0,0,0,0.98))] px-5 py-10 text-center shadow-xl sm:px-6 md:px-8">
+            <div class="max-w-md">
+                <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-full border border-white/10 bg-white/5 text-xl text-gray-200">
+                    <i class="fa-solid fa-box-open"></i>
+                </div>
+                <h3 class="mt-4 text-xl font-semibold text-white">
+                    No hay productos para mostrar
+                </h3>
+                <p class="mt-2 text-sm leading-6 text-gray-400 sm:text-base">
+                    No encontramos articulos asociados a esta orden. Regresa al listado e intenta abrirla nuevamente.
+                </p>
+            </div>
+        </div>
+    }
+</section>

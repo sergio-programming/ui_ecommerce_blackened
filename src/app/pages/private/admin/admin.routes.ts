@@ -1,6 +1,7 @@
 import { Routes } from "@angular/router";
 import { AdminDashboard } from "./admin-dashboard/admin-dashboard";
 import { OrderList } from "../../../features/order/order-list/order-list";
+import { OrderItems } from "../../../features/order/order-items/order-items";
 
 export const adminRoutes: Routes = [
     { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
@@ -21,5 +22,10 @@ export const adminRoutes: Routes = [
         path: 'ordenes',
         component: OrderList,
         title: 'Lista de Ordenes'
+    },
+    {
+        path: 'articulos-orden/:id',
+        component: OrderItems,
+        title: 'Articulos de la Orden'
     }
 ]

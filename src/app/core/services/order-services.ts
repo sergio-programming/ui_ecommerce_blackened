@@ -20,6 +20,12 @@ export class OrderServices {
     );
   }
 
+  async getOrder(_id: string): Promise<Order> {
+    return await firstValueFrom(
+      this.http.get<Order>(`${this.apiUrl}/${_id}`)
+    );
+  }
+
   async getOrdersByUser(): Promise<Order[]> {
     return await firstValueFrom(
       this.http.get<Order[]>(`${this.apiUrl}/user`)

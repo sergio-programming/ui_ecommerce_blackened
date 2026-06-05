@@ -41,7 +41,7 @@
             </div>
         </div>
     } @else if (userAddreses().length > 0) {
-        <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+        <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-12">
             @for (address of userAddreses(); track address.shippingAddress; let i = $index) {
                 <article class="group overflow-hidden rounded-3xl border border-gray-800 bg-[linear-gradient(180deg,rgba(17,24,39,0.92),rgba(0,0,0,0.98))] shadow-2xl transition-colors duration-200 hover:border-white/20">
                     <div class="border-b border-white/10 px-5 py-5 sm:px-6">

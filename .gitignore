@@ -20,6 +20,7 @@ pnpm-debug.log*
 .env.*
 !.env.example
 !.env.*.example
+cypress.env.json
 
 # IDEs and editors
 .idea/

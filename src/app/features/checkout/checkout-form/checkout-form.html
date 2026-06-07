@@ -26,6 +26,47 @@
         </div>
     </div>
 
+    @if (orderCreated()) {
+        <div class="overflow-hidden rounded-3xl border border-emerald-400/25 bg-[radial-gradient(circle_at_top_left,rgba(16,185,129,0.16),transparent_34%),linear-gradient(135deg,rgba(17,24,39,0.98),rgba(0,0,0,1)_60%,rgba(6,78,59,0.3))] px-5 py-8 text-center shadow-2xl sm:px-8 md:px-10 md:py-12">
+            <div class="mx-auto flex max-w-2xl flex-col items-center gap-6">
+                <div class="flex h-20 w-20 items-center justify-center rounded-3xl border border-emerald-300/30 bg-emerald-400/15 text-3xl text-emerald-200 shadow-[0_18px_45px_rgba(16,185,129,0.18)]">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+
+                <div class="space-y-3">
+                    <span class="inline-flex rounded-full border border-emerald-300/25 bg-emerald-400/10 px-3 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.24em] text-emerald-100">
+                        Pedido confirmado
+                    </span>
+                    <h2 class="text-3xl font-semibold text-white sm:text-4xl">
+                        Tu orden quedo registrada
+                    </h2>
+                    <p class="text-sm leading-6 text-gray-300 sm:text-base">
+                        {{ createdOrderMessage() || 'Recibimos tu pedido correctamente. Puedes revisar el estado desde tu historial de ordenes.' }}
+                    </p>
+                </div>
+
+                <div class="grid w-full gap-3 sm:max-w-lg sm:grid-cols-2">
+                    <button
+                        type="button"
+                        (click)="onGoToOrderHistory()"
+                        class="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white px-5 py-3 text-sm font-semibold text-black shadow-lg transition cursor-pointer hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-white/30"
+                    >
+                        <i class="fa-solid fa-receipt text-sm"></i>
+                        Ver mis ordenes
+                    </button>
+
+                    <button
+                        type="button"
+                        (click)="onGoToHome()"
+                        class="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/10 px-5 py-3 text-sm font-semibold text-white shadow-lg transition cursor-pointer hover:border-white/20 hover:bg-white/15 focus:outline-none focus:ring-2 focus:ring-white/30"
+                    >
+                        <i class="fa-solid fa-house text-sm"></i>
+                        Ir al inicio
+                    </button>
+                </div>
+            </div>
+        </div>
+    } @else {
     @if (message()) {
         <div class="flex items-start gap-3 rounded-2xl border border-amber-400/35 bg-[linear-gradient(135deg,rgba(24,24,27,0.98),rgba(0,0,0,0.94))] px-4 py-3 text-sm text-gray-100 shadow-[0_18px_45px_rgba(0,0,0,0.28),inset_0_1px_0_rgba(255,255,255,0.08)]">
             <span class="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-amber-300/40 bg-amber-400/15 text-amber-200">
@@ -420,5 +461,6 @@
                 </div>
             </aside>
         </div>
+    }
     }
 </section>

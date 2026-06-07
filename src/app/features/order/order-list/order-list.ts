@@ -61,7 +61,18 @@ export class OrderList implements OnInit {
     }
 
     const basePath = role;
-    this.router.navigate(['/', basePath, 'articulos-orden', order._id]);
+    this.router.navigate(['/', basePath, 'ordenes', 'articulos-orden', order._id]);
+  }
+
+  onGoToUpdateOrderForm(order: Order): void {
+    const role = this.currentUser?.role;
+
+    if (role !== 'admin' && role !== 'staff') {
+      this.message.set('No tienes permisos para editar esta orden');
+      return;
+    }
+
+    this.router.navigate(['/', role, 'ordenes', order._id]);
   }
 
   formatPrice(valor: number): string {

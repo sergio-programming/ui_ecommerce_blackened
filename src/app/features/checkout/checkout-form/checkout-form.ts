@@ -30,7 +30,9 @@ export class CheckoutForm implements OnInit {
   readonly transportationCost = signal<number>(0);
   readonly totalOrder = signal<number>(0);
   readonly isLoading = signal<boolean>(false);
-  readonly message = signal<String | null>(null);
+  readonly message = signal<string | null>(null);
+  readonly orderCreated = signal<boolean>(false);
+  readonly createdOrderMessage = signal<string | null>(null);
 
   readonly shippingMethodOptions = ['Estandar', 'Express'];
   readonly paymentMethodOptions = [
@@ -140,12 +142,12 @@ export class CheckoutForm implements OnInit {
           console.error('La orden fue creada, pero no se pudo eliminar el carrito:', cartError);
         }
 
-        this.message.set(response.message);
+        this.createdOrderMessage.set(response.message);
+        this.orderCreated.set(true);
+        this.cartInfo.set(null);
+        this.cartItems.set([]);
+        this.transportationCost.set(0);
         this.checkoutForm.reset();
-        
-        setTimeout(() => {
-          this.router.navigate(['/user/inicio']);
-        }, 3000);
       } catch (error: any) {
         console.error('Error al crear la orden: ', error);
         this.message.set(error.error?.message || 'Error interno del servidor');
@@ -199,6 +201,14 @@ export class CheckoutForm implements OnInit {
 
   onGoToShoppingCart(): void {
     this.router.navigate(['/user/carrito-compra']);
+  }
+
+  onGoToOrderHistory(): void {
+    this.router.navigate(['/user/mi-cuenta/historial-ordenes']);
+  }
+
+  onGoToHome(): void {
+    this.router.navigate(['/user/inicio']);
   }
 
   formatPrice(price: number | undefined | null): string {

@@ -1,7 +1,5 @@
 import { Routes } from "@angular/router";
 import { StaffDashboard } from "./staff-dashboard/staff-dashboard";
-import { OrderList } from "../../../features/order/order-list/order-list";
-import { OrderItems } from "../../../features/order/order-items/order-items";
 
 export const staffRoutes: Routes = [
     { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
@@ -16,12 +14,6 @@ export const staffRoutes: Routes = [
     },
     {
         path: 'ordenes',
-        component: OrderList,
-        title: 'Lista de Ordenes'
-    },
-    {
-        path: 'articulos-orden/:id',
-        component: OrderItems,
-        title: 'Articulos de la Orden'
+        loadChildren: () => import('../../../features/order/order.routes').then(m => m.orderRoutes)
     }
 ]

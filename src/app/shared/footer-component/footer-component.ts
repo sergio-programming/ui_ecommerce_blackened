@@ -21,7 +21,7 @@ export class FooterComponent {
 
     if (currentUser && currentUser.role === 'admin') {
       return [
-        { label: 'Dashboard', path: '/admin/dashboard', icon: 'fa-solid fa-chart-line' },
+        { label: 'Tablero de Control', path: '/admin/dashboard', icon: 'fa-solid fa-chart-line' },
         { label: 'Usuarios', path: '/admin/gestion-usuarios', icon: 'fa-solid fa-users' },
         { label: 'Productos', path: '/admin/productos', icon: 'fa-solid fa-box-open' },
         { label: 'Ordenes', path: '/admin/ordenes', icon: 'fa-solid fa-receipt' } 
@@ -30,7 +30,7 @@ export class FooterComponent {
 
     if (currentUser && currentUser.role === 'staff') {
       return [
-        { label: 'Dashboard', path: '/staff/dashboard', icon: 'fa-solid fa-chart-line' },
+        { label: 'Tablero de Control', path: '/staff/dashboard', icon: 'fa-solid fa-chart-line' },
         { label: 'Productos', path: '/staff/productos', icon: 'fa-solid fa-box-open' },
         { label: 'Ordenes', path: '/staff/ordenes', icon: 'fa-solid fa-receipt' }
       ]

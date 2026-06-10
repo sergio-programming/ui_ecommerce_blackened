@@ -255,8 +255,55 @@ export class ProductDetail implements OnInit {
     }
   }
 
-  onGoToCheckoutForm(): void {
-    this.router.navigate(['/user/pedido']);
+  async onGoToCheckoutForm(): Promise<void> {
+    const user = this.currentUser();
+    const product = this.productDetail();
+
+    if (!user) {
+      await this.router.navigate(['/auth/login']);
+      return;
+    }
+
+    if (!product) {
+      this.message.set('Producto no encontrado');
+      return;
+    }
+
+    if (this.productDetailForm.invalid) {
+      this.productDetailForm.markAllAsTouched();
+      return;
+    }
+
+    if (!this.validateQuantityAgainstStock()) {
+      return;
+    }
+
+    this.isLoading.set(true);
+
+    try {
+      const item = this.buildCartItem();
+      const currentCart = this.userCartExists();
+
+      if (currentCart) {
+        const updatedData: CartUpdate = {
+          items: this.mergeCartItem(currentCart, item)
+        }
+        const response = await this.cartServices.updateCart(currentCart._id, updatedData);
+        this.userCartExists.set(response.cart);      
+      } else {
+        const createdData: CartCreate = {
+          items: [item]
+        };
+        const response = await this.cartServices.createCart(createdData);
+        this.userCartExists.set(response.cart);
+      }
+      this.router.navigate(['/user/pedido']);
+    } catch (error: any) {
+      console.error('Error al agregar al carrito de compra: ', error);
+      this.message.set(error.error?.message || 'Error de conexion al servidor');
+    } finally {
+      this.isLoading.set(false);
+    }    
   }
 
 }

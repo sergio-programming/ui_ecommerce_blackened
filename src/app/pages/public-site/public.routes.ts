@@ -13,6 +13,7 @@ export const PublicSiteRoutes: Routes = [
       { path: 'camisetas', component: Shirts, title: 'Camisetas' },
       { path: 'camisetas/:productCode', component: ProductDetail, title: 'Detalle de Producto' },
       { path: 'discos', component: Albums, title: 'Discos' },
+      { path: 'discos/:productCode', component: ProductDetail, title: 'Detalle de Producto' },
       {
         path: 'auth',
         loadChildren: () => import('../../features/auth/auth.routes').then((m) => m.AuthRoutes),
